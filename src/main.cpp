@@ -1,15 +1,12 @@
 #include <Arduino.h>
-#include "gps_Ankita/gpsHelper.h"
-#include "accelero_Koustav/acceleroHelper.h"
-#include "gyro_Aaheli/gyroHelper.h"
+#include "GPS/GpsHelper.h"
+#include "GyroAccelero/GyroAcceleroHelper.h"
+#include "Interfaces/BridgeInterface.h"
 
+GPSHelper gpsHelper = GPSHelper();
+GyroAcceleroHelper gyroHelper = GyroAcceleroHelper();
 
-
-GPSHelper gpsHelper=GPSHelper();
-AcceleroHelper acceleroHelper=AcceleroHelper();
-GYROHelper gyroHelper=GYROHelper();
-
-//ANKITA
+// ANKITA
 void gpsHandlerTask(void *pvParameters)
 {
   (void)pvParameters;
@@ -18,14 +15,12 @@ void gpsHandlerTask(void *pvParameters)
   while (true)
   {
     gpsHelper.loop();
-    vTaskDelay(1000 / portTICK_PERIOD_MS); //delay(100);
+    vTaskDelay(1000 / portTICK_PERIOD_MS); // delay(100);
   }
-
-    
 }
 
-//AAHELI
-void gyroHandlerTask(void *pvParameters)
+// AAHELI
+void gyroAcceleroHandlerTask(void *pvParameters)
 {
   (void)pvParameters;
   gyroHelper.setup();
@@ -33,46 +28,30 @@ void gyroHandlerTask(void *pvParameters)
   while (true)
   {
     gyroHelper.loop();
-    vTaskDelay(1500 / portTICK_PERIOD_MS); //delay(100);
   }
-
-    
 }
 
-//KOUSTAV
-void accelerohandlerTask(void *pvParameters)
-{
-  (void)pvParameters;
-  acceleroHelper.setup();
-
-  while (true)
-  {
-    acceleroHelper.loop();
-    vTaskDelay(2000 / portTICK_PERIOD_MS); //delay(100);
-  }
-
-    
-}
+// KOUSTAV
 
 void setup()
 {
   Serial.begin(115200);
+  pinMode(LED_PIN, OUTPUT);
   vTaskDelay(1000 / portTICK_PERIOD_MS);
 
   MN_DEBUGLN("\n\nInitializing...\n\n");
 
   // Ankita
-  xTaskCreate(gpsHandlerTask, "GPS Handler Task", 4*1024, NULL, 1, NULL);
+  xTaskCreate(gpsHandlerTask, "GPS Task", 4 * 1024, NULL, 1, NULL);
 
   // Aaheli
-  xTaskCreate(gyroHandlerTask, "Gyroscope Handler Task", 4*1024, NULL, 1, NULL);
-  
+  xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);
+
   // Koustav
-  xTaskCreate(accelerohandlerTask, "Accelerometer Handler Task", 4*1024, NULL, 1, NULL);
 }
 
 void loop()
 {
-  //Temporary
-  vTaskDelay(100 / portTICK_PERIOD_MS); //delay(100);
+  digitalWrite(2, !digitalRead(2));
+  delay(1000);
 }
