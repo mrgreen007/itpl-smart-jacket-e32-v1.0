@@ -11,7 +11,7 @@ void gyroAcceleroSetup()
 
 void gyroAcceleroLoop()
 {
-    for (int i = 0; i < GA_REFRESH_RATE; i++)
+    for (int i = 0; i < GA_SAMPLE_POINTS; i++)
     {
         if (gyro_accelero_mutex)
         {
@@ -23,11 +23,12 @@ void gyroAcceleroLoop()
             MN_DEBUG("GyroAccelero Loop : ");
             MN_DEBUGLN(i);
 
-            if (GA_REFRESH_RATE-1 == i)
+            if (GA_SAMPLE_POINTS - 1 == i)
             {
                 gyro_accelero_mutex = false;
             }
-            delay(1000 / GA_REFRESH_RATE);
+
+            delay(ONE_SEC / GA_SAMPLING_RATE);
         }
         else
         {

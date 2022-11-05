@@ -11,7 +11,7 @@ void gpsSetup()
 
 void gpsLoop()
 {
-    for (int i = 0; i < GPS_REFRESH_RATE; i++)
+    for (int i = 0; i < GPS_SAMPLE_POINTS; i++)
     {
         if (gps_mutex)
         {
@@ -23,11 +23,11 @@ void gpsLoop()
             MN_DEBUG("GPS Loop : ");
             MN_DEBUGLN(i);
 
-            if (GPS_REFRESH_RATE-1 == i)
+            if (GPS_SAMPLE_POINTS - 1 == i)
             {
                 gps_mutex = false;
             }
-            delay(1000 / GPS_REFRESH_RATE);
+            delay(ONE_SEC / GPS_SAMPLING_RATE);
         }
         else
         {
