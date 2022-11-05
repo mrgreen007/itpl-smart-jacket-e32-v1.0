@@ -1,37 +1,28 @@
-#include <Arduino.h>
 #include "GPS/GpsHelper.h"
 #include "GyroAccelero/GyroAcceleroHelper.h"
 #include "Interfaces/BridgeInterface.h"
 
-GPSHelper gpsHelper = GPSHelper();
-GyroAcceleroHelper gyroHelper = GyroAcceleroHelper();
-
-// ANKITA
 void gpsHandlerTask(void *pvParameters)
 {
   (void)pvParameters;
-  gpsHelper.setup();
+  gpsSetup();
 
   while (true)
   {
-    gpsHelper.loop();
-    vTaskDelay(1000 / portTICK_PERIOD_MS); // delay(100);
+    gpsLoop();
   }
 }
 
-// AAHELI
 void gyroAcceleroHandlerTask(void *pvParameters)
 {
   (void)pvParameters;
-  gyroHelper.setup();
+  gyroAcceleroSetup();
 
   while (true)
   {
-    gyroHelper.loop();
+    gyroAcceleroLoop();
   }
 }
-
-// KOUSTAV
 
 void setup()
 {
@@ -46,12 +37,17 @@ void setup()
 
   // Aaheli
   xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);
-
-  // Koustav
 }
 
 void loop()
 {
-  digitalWrite(2, !digitalRead(2));
-  delay(1000);
+  if(gyro_accelero_mutex == false && gps_mutex == false)
+  {
+    // MN_DEBUGLN("> buffer full <");
+    // delay(5*1000);
+    // gyro_accelero_mutex = true;
+    // gps_mutex = true;
+  }
+  digitalWrite(LED_PIN, !digitalRead(LED_PIN));
+  delay(500);
 }
