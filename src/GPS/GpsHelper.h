@@ -20,8 +20,8 @@ void gpsLoop()
             eg: gps_buffer[i][j] = some_value
             */
 
-            MN_DEBUG("GPS Loop : ");
-            MN_DEBUGLN(i);
+            // MN_DEBUG("GPS Loop : ");
+            // MN_DEBUGLN(i);
 
             if (GPS_SAMPLE_POINTS - 1 == i)
             {
