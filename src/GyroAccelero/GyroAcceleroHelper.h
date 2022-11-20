@@ -6,16 +6,19 @@
 
 #include "GY521.h"
 
-GY521 sensor(0x69);
+GY521 sensor = GY521();
 
 uint32_t counter = 0;
 
+#define SDA 21
+#define SCL 22
+
 void testSetup()
 {
-    Wire.begin();
+    sensor.begin(SDA, SCL);
 
     delay(100);
-    while (sensor.wakeup() == false)
+    while (!sensor.isConnected())
     {
         Serial.print(millis());
         Serial.println("\tCould not connect to GY521");
