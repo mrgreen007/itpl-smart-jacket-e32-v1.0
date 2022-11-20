@@ -1,6 +1,12 @@
+#include "WiFi.h"
 #include "GPS/GpsHelper.h"
 #include "GyroAccelero/GyroAcceleroHelper.h"
 #include "Interfaces/BridgeInterface.h"
+#include "Firebase/FirebaseHelper.h"
+
+const char *ssid = "Aaheli_Phone";
+const char *password = "y235utvs";
+String timestamp = "";
 
 void gpsHandlerTask(void *pvParameters)
 {
@@ -32,20 +38,35 @@ void setup()
 
   MN_DEBUGLN("\n\nInitializing...\n\n");
 
-  // Ankita
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+    MN_DEBUGLN("Connecting to WiFi..");
+  }
+
+  MN_DEBUGLN("Connected to the WiFi network");
+
   xTaskCreate(gpsHandlerTask, "GPS Task", 4 * 1024, NULL, 1, NULL);
 
-  // Aaheli
   xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);
 }
 
 void loop()
 {
-  if(gyro_accelero_mutex == false && gps_mutex == false)
+  if (gyro_accelero_mutex == false) // && gps_mutex == false
   {
-    // MN_DEBUGLN("> buffer full <");
-    // delay(5*1000);
-    // gyro_accelero_mutex = true;
+    MN_DEBUGLN(">>> buffer full <<<");
+
+    MN_DEBUGLN("[START] Sending data...");
+    timestamp = String(start_timestamp);
+    timestamp += "-";
+    timestamp += String(end_timestamp);
+    updateDB(timestamp);
+    MN_DEBUGLN("[SUCCESS] Done!");
+
+    gyro_accelero_mutex = true;
     // gps_mutex = true;
   }
   digitalWrite(LED_PIN, !digitalRead(LED_PIN));

@@ -11,10 +11,11 @@ void gpsSetup()
 
 void gpsLoop()
 {
-    for (int i = 0; i < GPS_SAMPLE_POINTS; i++)
+    if (gps_mutex)
     {
-        if (gps_mutex)
+        for (int i = 0; i < GPS_SAMPLE_POINTS; i++)
         {
+
             /*
             TODO: assign values to the buffer array
             eg: gps_buffer[i][j] = some_value
@@ -29,10 +30,10 @@ void gpsLoop()
             }
             delay(ONE_SEC / GPS_SAMPLING_RATE);
         }
-        else
-        {
-            delay(10);
-        }
+    }
+    else
+    {
+        delay(10);
     }
 }
 
