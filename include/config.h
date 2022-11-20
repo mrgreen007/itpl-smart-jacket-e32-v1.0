@@ -23,9 +23,9 @@
 #define LED_PIN 2
 
 // Editable
-#define GA_SAMPLING_RATE 1         // In Hz [max value: 1000]
-#define GPS_SAMPLING_RATE 5        // In Hz [max value: 1000]
-#define SERVER_SYNC_INTERVAL 10000 // In ms [min value: 1000]
+#define GA_SAMPLING_RATE 5        // In Hz [max value: 1000]
+#define GPS_SAMPLING_RATE 5       // In Hz [max value: 1000]
+#define SERVER_SYNC_INTERVAL 5000 // In ms [min value: 1000]
 
 // Non-editable
 #define ONE_SEC 1000
