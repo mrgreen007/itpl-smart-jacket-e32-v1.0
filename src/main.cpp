@@ -48,6 +48,8 @@ void setup()
 
   MN_DEBUGLN("Connected to the WiFi network");
 
+  firebaseSetup();
+
   xTaskCreate(gpsHandlerTask, "GPS Task", 4 * 1024, NULL, 1, NULL);
 
   xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);

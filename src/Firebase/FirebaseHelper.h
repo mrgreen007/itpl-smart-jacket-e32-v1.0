@@ -22,7 +22,7 @@ void firebaseSetup()
 
 bool fbSilentUpdate(FirebaseJson &json)
 {
-    if (Firebase.RTDB.updateNodeSilent(&firebaseData1, path, &json)) // +Async
+    if (Firebase.RTDB.updateNodeSilentAsync(&firebaseData1, path, &json)) // +Async
     {
         MN_DEBUGLN_F("[UPDATE] Successful");
     }

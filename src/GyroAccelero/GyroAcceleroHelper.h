@@ -34,6 +34,12 @@ void gyroAcceleroLoop()
 {
     if (gyro_accelero_mutex)
     {
+        temp_accelero_X = "";
+        temp_accelero_Y = "";
+        temp_accelero_Z = "";
+        temp_gyro_X = "";
+        temp_gyro_Y = "";
+        temp_gyro_Z = "";
         start_timestamp = millis(); // should be modified
         for (int i = 0; i < GA_SAMPLE_POINTS; i++)
         {
@@ -43,21 +49,27 @@ void gyroAcceleroLoop()
 
             gyro_accelero_buffer[i][0] = a.acceleration.x;
             temp_accelero_X += a.acceleration.x;
+            temp_accelero_X += ",";
 
             gyro_accelero_buffer[i][1] = a.acceleration.y;
             temp_accelero_Y += a.acceleration.y;
+            temp_accelero_Y += ",";
 
             gyro_accelero_buffer[i][2] = a.acceleration.z;
             temp_accelero_Z += a.acceleration.z;
+            temp_accelero_Z += ",";
 
             gyro_accelero_buffer[i][3] = g.gyro.x;
             temp_gyro_X += g.gyro.x;
+            temp_gyro_X += ",";
 
             gyro_accelero_buffer[i][4] = g.gyro.y;
             temp_gyro_Y += g.gyro.y;
+            temp_gyro_Y += ",";
 
             gyro_accelero_buffer[i][5] = g.gyro.z;
             temp_gyro_Z += g.gyro.z;
+            temp_gyro_Z += ",";
 
             MN_DEBUG("GyroAccelero Loop : ");
             MN_DEBUG(i);
