@@ -34,7 +34,7 @@
 #define GPS_SAMPLE_POINTS (GPS_SAMPLING_RATE * BUFFER_TIME)
 
 // Firebase creds
-#define FIREBASE_HOST "itpl-smart-jacket-v1-default-rtdb.firebaseio.com"
-#define FIREBASE_AUTH "sMgJhFByyBzpDk0hQc5NdzVXAzVNDpgtqe75uKcz"
+#define FIREBASE_HOST "https://data-10cce-default-rtdb.firebaseio.com/"
+#define FIREBASE_AUTH "XLEA8AwVcE8jibJd2gBWMtL9Yna5vRHUH1CNch1A"
 
 #endif
