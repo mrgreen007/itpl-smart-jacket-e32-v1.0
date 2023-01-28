@@ -1,11 +1,12 @@
 #include "WiFi.h"
 #include "GPS/GpsHelper.h"
 #include "GyroAccelero/GyroAcceleroHelper.h"
+#include "TempHu/TempHuHelper.h"
 #include "Interfaces/BridgeInterface.h"
 #include "Firebase/FirebaseHelper.h"
 
-const char *ssid = "Aaheli_Phone";
-const char *password = "y235utvs";
+const char *ssid = "LAPTOP-N8V9637C 6288";
+const char *password = "%0T521o8";
 String timestamp = "";
 
 void gpsHandlerTask(void *pvParameters)
@@ -49,6 +50,7 @@ void setup()
   MN_DEBUGLN("Connected to the WiFi network");
 
   firebaseSetup();
+  tempHuSetup();
 
   xTaskCreate(gpsHandlerTask, "GPS Task", 4 * 1024, NULL, 1, NULL);
 

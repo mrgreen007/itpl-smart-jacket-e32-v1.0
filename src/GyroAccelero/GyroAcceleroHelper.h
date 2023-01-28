@@ -71,8 +71,8 @@ void gyroAcceleroLoop()
             temp_gyro_Z += g.gyro.z;
             temp_gyro_Z += ",";
 
-            MN_DEBUG("GyroAccelero Loop : ");
-            MN_DEBUG(i);
+            // MN_DEBUG("GyroAccelero Loop : ");
+            // MN_DEBUG(i);
 
             if (GA_SAMPLE_POINTS - 1 == i)
             {

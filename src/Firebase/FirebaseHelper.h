@@ -43,6 +43,8 @@ bool jsonSetter(FirebaseJson &json)
     MN_DEBUGLN(temp_gyro_X);
     MN_DEBUGLN(temp_gyro_Y);
     MN_DEBUGLN(temp_gyro_Z);
+    MN_DEBUGLN(getTemperature());
+    MN_DEBUGLN(getHumidity());
 
     json.set("A_X", temp_accelero_X);
     json.set("A_Y", temp_accelero_Y);
@@ -50,6 +52,8 @@ bool jsonSetter(FirebaseJson &json)
     json.set("G_X", temp_gyro_X);
     json.set("G_Y", temp_gyro_Y);
     json.set("G_Z", temp_gyro_Z);
+    json.set("Temp", getTemperature());
+    json.set("Humidity", getHumidity());
 
     return true;
 }
@@ -61,6 +65,7 @@ bool updateDB(const String &timestamp)
     {
         path = "/";
         path += timestamp;
+        // return true;
         return fbSilentUpdate(payload);
     }
     return false;
