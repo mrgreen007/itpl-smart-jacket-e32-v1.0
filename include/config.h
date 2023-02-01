@@ -25,6 +25,7 @@
 // Editable
 #define GA_SAMPLING_RATE 5        // In Hz [max value: 1000]
 #define GPS_SAMPLING_RATE 5       // In Hz [max value: 1000]
+#define SOUND_SAMPLING_RATE 5     // In Hz [max value: 1000]
 #define SERVER_SYNC_INTERVAL 5000 // In ms [min value: 1000]
 
 // Non-editable
@@ -32,6 +33,7 @@
 #define BUFFER_TIME (SERVER_SYNC_INTERVAL / ONE_SEC) // In sec
 #define GA_SAMPLE_POINTS (GA_SAMPLING_RATE * BUFFER_TIME)
 #define GPS_SAMPLE_POINTS (GPS_SAMPLING_RATE * BUFFER_TIME)
+#define SOUND_SAMPLE_POINTS (SOUND_SAMPLING_RATE * BUFFER_TIME)
 
 // Firebase creds
 #define FIREBASE_HOST "https://data-10cce-default-rtdb.firebaseio.com/"
