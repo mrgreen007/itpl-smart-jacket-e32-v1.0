@@ -52,8 +52,24 @@ bool jsonSetter(FirebaseJson &json)
     json.set("G_X", temp_gyro_X);
     json.set("G_Y", temp_gyro_Y);
     json.set("G_Z", temp_gyro_Z);
-    json.set("Temp", getTemperature());
-    json.set("Humidity", getHumidity());
+    if (current_temperature != -100)
+    {
+        json.set("Temp", current_temperature);
+        temp_value = current_temperature;
+    }
+    else
+    {
+        json.set("Temp", temp_value);
+    }
+    if (current_humidity != -100)
+    {
+        json.set("Hum", current_humidity);
+        hum_value = current_humidity;
+    }
+    else
+    {
+        json.set("Hum", hum_value);
+    }
 
     return true;
 }
