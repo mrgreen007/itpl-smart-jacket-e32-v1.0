@@ -10,6 +10,8 @@ FirebaseAuth auth;
 FirebaseConfig config;
 
 String path = "";
+float temp_value;
+float hum_value;
 
 void firebaseSetup()
 {
