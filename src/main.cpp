@@ -2,7 +2,6 @@
 #include "GPS/GpsHelper.h"
 #include "GyroAccelero/GyroAcceleroHelper.h"
 #include "TempHu/TempHuHelper.h"
-#include "SoundSensor/SoundSensorHelper.h"
 #include "Interfaces/BridgeInterface.h"
 #include "Firebase/FirebaseHelper.h"
 
@@ -21,17 +20,6 @@ void gpsHandlerTask(void *pvParameters)
   }
 }
 
-void soundSensorHandlerTask(void *pvParameters)
-{
-  (void)pvParameters;
-  soundSensorSetup();
-
-  while (true)
-  {
-    soundSensorLoop();
-  }
-}
-
 void gyroAcceleroHandlerTask(void *pvParameters)
 {
   (void)pvParameters;
@@ -40,6 +28,17 @@ void gyroAcceleroHandlerTask(void *pvParameters)
   while (true)
   {
     gyroAcceleroLoop();
+  }
+}
+
+void tempHumHandlerTask(void *pvParameters)
+{
+  (void)pvParameters;
+  tempHuSetup();
+
+  while (true)
+  {
+    tempHuLoop();
   }
 }
 
@@ -62,13 +61,12 @@ void setup()
   MN_DEBUGLN("Connected to the WiFi network");
 
   firebaseSetup();
-  tempHuSetup();
 
   xTaskCreate(gpsHandlerTask, "GPS Task", 4 * 1024, NULL, 1, NULL);
 
   xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);
 
-  xTaskCreate(soundSensorHandlerTask, "SoundSensor Task", 4 * 1024, NULL, 1, NULL);
+  xTaskCreate(tempHumHandlerTask, "TH Task", 4 * 1024, NULL, 1, NULL);
 }
 
 void loop()

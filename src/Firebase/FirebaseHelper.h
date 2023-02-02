@@ -45,8 +45,8 @@ bool jsonSetter(FirebaseJson &json)
     MN_DEBUGLN(temp_gyro_X);
     MN_DEBUGLN(temp_gyro_Y);
     MN_DEBUGLN(temp_gyro_Z);
-    MN_DEBUGLN(getTemperature());
-    MN_DEBUGLN(getHumidity());
+    MN_DEBUGLN(current_temperature);
+    MN_DEBUGLN(current_humidity);
 
     json.set("A_X", temp_accelero_X);
     json.set("A_Y", temp_accelero_Y);
