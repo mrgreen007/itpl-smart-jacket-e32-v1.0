@@ -7,9 +7,6 @@
 #include <Wire.h>
 #include <HardwareSerial.h>
 
-#define A_PIN 35
-#define D_PIN 34
-
 unsigned int output;
 const int sampleWindow = 10;
 unsigned int sample;
@@ -27,7 +24,7 @@ int analogIo()
     unsigned int minimum_signal = 4095; // maximum value
     while (millis() - start_time < sampleWindow)
     {
-        output = analogRead(A_PIN);
+        output = analogRead(SOUND_A0_PIN);
         if (output < 4095)
         {
             if (output > maximum_signal)
@@ -53,7 +50,7 @@ int digitalIo()
     while (millisElapsed < sampleWindow)
     {
         millisCurrent = millis();
-        if (digitalRead(D_PIN) == LOW)
+        if (digitalRead(SOUND_D0_PIN) == LOW)
             sampleBufferValue++;
         millisElapsed = millisCurrent - millisLast;
     }
@@ -65,8 +62,8 @@ int digitalIo()
 void soundSensorSetup()
 {
     MN_DEBUGLN("SoundSensor Setup");
-    pinMode(A_PIN, INPUT);
-    pinMode(D_PIN, INPUT);
+    pinMode(SOUND_A0_PIN, INPUT);
+    pinMode(SOUND_D0_PIN, INPUT);
     delay(50);
 }
 
@@ -74,10 +71,13 @@ void soundSensorLoop()
 {
     if (sound_sensor_mutex)
     {
-
+        temp_sound_db = "";
+        start_timestamp = millis(); // should be modified
         for (int i = 0; i < SOUND_SAMPLE_POINTS; i++)
         {
             sound_sensor_buffer[i][0] = digitalIo();
+            temp_sound_db += digitalIo();
+            temp_sound_db += ",";
             if (SOUND_SAMPLE_POINTS - 1 == i)
             {
                 end_timestamp = millis(); // should be modified

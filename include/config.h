@@ -21,6 +21,11 @@
 #define CORE_1 1
 
 #define LED_PIN 2
+#define GYRO_ACCELERO_SDA_PIN 21
+#define GYRO_ACCELERO_SCL_PIN 22
+#define TEMP_HUM_PIN 4
+#define SOUND_A0_PIN 35
+#define SOUND_D0_PIN 34
 
 // Editable
 #define GA_SAMPLING_RATE 5        // In Hz [max value: 1000]

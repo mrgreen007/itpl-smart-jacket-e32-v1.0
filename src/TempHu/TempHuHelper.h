@@ -11,8 +11,7 @@ DHTesp dht;
 void tempHuSetup()
 {
     MN_DEBUGLN("Temp Setup");
-    Serial.begin(115200);
-    dht.setup(4, DHTesp::DHT22);
+    dht.setup(TEMP_HUM_PIN, DHTesp::DHT22);
 }
 
 float getTemperature()
@@ -32,5 +31,11 @@ float getHumidity()
         return h;
     }
     return -100.00;
+}
+void tempHuLoop()
+{
+    current_temperature = getTemperature();
+    current_humidity = getHumidity();
+    delay(1000);
 }
 #endif
