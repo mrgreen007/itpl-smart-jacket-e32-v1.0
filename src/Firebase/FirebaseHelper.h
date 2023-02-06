@@ -73,6 +73,8 @@ bool jsonSetter(FirebaseJson &json)
         json.set("Hum", hum_value);
     }
 
+    json.set("SNL", temp_sound_db);
+
     return true;
 }
 

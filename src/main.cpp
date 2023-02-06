@@ -2,6 +2,7 @@
 #include "GPS/GpsHelper.h"
 #include "GyroAccelero/GyroAcceleroHelper.h"
 #include "TempHu/TempHuHelper.h"
+#include "SoundSensor/SoundSensorHelper.h"
 #include "Interfaces/BridgeInterface.h"
 #include "Firebase/FirebaseHelper.h"
 
@@ -42,6 +43,17 @@ void tempHumHandlerTask(void *pvParameters)
   }
 }
 
+void soundSensorHandlerTask(void *pvParameters)
+{
+  (void)pvParameters;
+  soundSensorSetup();
+
+  while (true)
+  {
+    soundSensorLoop();
+  }
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -67,6 +79,8 @@ void setup()
   xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);
 
   xTaskCreate(tempHumHandlerTask, "TH Task", 4 * 1024, NULL, 1, NULL);
+
+  xTaskCreate(soundSensorHandlerTask, "SoundSensor Task", 4 * 1024, NULL, 1, NULL);
 }
 
 void loop()
