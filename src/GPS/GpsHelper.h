@@ -28,7 +28,7 @@ void gpsLoop()
     if (gps_mutex)
     {
         temp_gps_latitude = "";
-        temp_gps_latitude = "";
+        temp_gps_longitude = "";
         temp_gps_altitude = "";
         start_timestamp = millis(); // should be modified
         for (int i = 0; i < GPS_SAMPLE_POINTS; i++)
