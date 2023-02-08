@@ -26,6 +26,8 @@
 #define TEMP_HUM_PIN 4
 #define SOUND_A0_PIN 18
 #define SOUND_D0_PIN 19
+#define GPS_RX_PIN 17
+#define GPS_TX_PIN 16
 
 // Editable
 #define GA_SAMPLING_RATE 5        // In Hz [max value: 1000]

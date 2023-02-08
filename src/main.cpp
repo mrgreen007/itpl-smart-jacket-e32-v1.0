@@ -5,9 +5,10 @@
 #include "SoundSensor/SoundSensorHelper.h"
 #include "Interfaces/BridgeInterface.h"
 #include "Firebase/FirebaseHelper.h"
-
-const char *ssid = "LAPTOP-N8V9637C 6288";
-const char *password = "%0T521o8";
+//const char *ssid = "LAPTOP-N8V9637C 6288";
+//const char *password = "%0T521o8";
+const char *ssid = "Koustav@wifi";
+const char *password = "india@123";
 String timestamp = "";
 
 void gpsHandlerTask(void *pvParameters)
