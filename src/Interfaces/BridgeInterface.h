@@ -29,9 +29,7 @@ String temp_gps_longitude = "";
 String temp_gps_altitude = "";
 
 String temp_temperature = "";
-String updated_temperature = "";
 String temp_humidity = "";
-String updated_humidity = "";
 
 String temp_sound_db = "";
 

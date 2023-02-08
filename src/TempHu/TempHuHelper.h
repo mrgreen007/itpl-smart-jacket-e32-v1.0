@@ -8,26 +8,6 @@
 
 DHTesp dht;
 
-float getTemperature()
-{
-    float t = dht.getTemperature();
-    if (!isnan(t))
-    {
-        return t;
-    }
-    return -100.00;
-}
-
-float getHumidity()
-{
-    float h = dht.getHumidity();
-    if (!isnan(h))
-    {
-        return h;
-    }
-    return -100.00;
-}
-
 void tempHuSetup()
 {
     MN_DEBUGLN("Temp Setup");
@@ -36,11 +16,20 @@ void tempHuSetup()
 
 void tempHuLoop()
 {
-    temp_hum_buffer[0] = getTemperature();
-    temp_temperature = String(temp_hum_buffer[0]);
-    temp_hum_buffer[1] = getHumidity();
-    temp_humidity = String(temp_hum_buffer[1]);
-    
+    float t = dht.getTemperature();
+    float h = dht.getHumidity();
+    while (isnan(t) || isnan(h))
+    {
+        delay(10);
+        t = dht.getTemperature();
+        h = dht.getHumidity();
+    }
+
+    temp_hum_buffer[0] = t;
+    temp_temperature = String(t);
+    temp_hum_buffer[1] = h;
+    temp_humidity = String(h);
+
     delay(1000);
 }
 #endif

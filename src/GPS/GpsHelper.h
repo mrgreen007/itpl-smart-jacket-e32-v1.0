@@ -70,11 +70,11 @@ TinyGPSPlus gps;
 SoftwareSerial gpsSerial(GPS_TX_PIN, GPS_RX_PIN); // RX, TX
 char buffer[100];
 
-void updateValues(int i)
+/*void updateValues()
 {
   if (gps.location.isUpdated())
   {
-    /*double lat = gps.location.lat();
+    double lat = gps.location.lat();
     double lng = gps.location.lng();
 
     double altitude = gps.altitude.meters();
@@ -92,21 +92,9 @@ void updateValues(int i)
              "Date/Time: %d-%02d-%02d %02d:%02d:%02d",
              lat, lng, altitude, year, month, day, hour, minute, second);
 
-    Serial.println(buffer);*/
-
-    gps_buffer[i][0] = gps.location.lat();
-    temp_gps_latitude += String(gps.location.lat());
-    temp_gps_latitude += ",";
-
-    gps_buffer[i][1] = gps.location.lng();
-    temp_gps_longitude += String(gps.location.lng());
-    temp_gps_longitude += ",";
-
-    gps_buffer[i][2] = gps.altitude.meters();
-    temp_gps_altitude += String(gps.altitude.meters());
-    temp_gps_altitude += ",";
+    Serial.println(buffer);
   }
-}
+}*/
 
 void gpsSetup()
 {
@@ -128,19 +116,33 @@ void gpsLoop()
       {
         if (gps.encode(gpsSerial.read()))
         {
-          updateValues(i);
-          break;
+          if(gps.location.isUpdated())
+          {
+            gps_buffer[i][0] = gps.location.lat();
+            temp_gps_latitude += String(gps.location.lat());
+            temp_gps_latitude += ",";
+
+            gps_buffer[i][1] = gps.location.lng();
+            temp_gps_longitude += String(gps.location.lng());
+            temp_gps_longitude += ",";
+
+            gps_buffer[i][2] = gps.altitude.meters();
+            temp_gps_altitude += String(gps.altitude.meters());
+            temp_gps_altitude += ",";
+            break;
+          }
         }
       }
 
-      MN_DEBUG("GPS Loop : ");
-      MN_DEBUGLN(i);
+      // MN_DEBUG("GPS Loop : ");
+      // MN_DEBUGLN(i);
 
       if (GPS_SAMPLE_POINTS - 1 == i)
       {
         gps_mutex = false;
       }
-      delay(ONE_SEC / GPS_SAMPLING_RATE);
+      // delay(ONE_SEC / GPS_SAMPLING_RATE);
+      delay(10);
     }
   }
   else
