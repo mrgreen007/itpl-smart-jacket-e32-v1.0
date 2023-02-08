@@ -30,7 +30,6 @@ void gpsLoop()
         temp_gps_latitude = "";
         temp_gps_longitude = "";
         temp_gps_altitude = "";
-        start_timestamp = millis(); // should be modified
         for (int i = 0; i < GPS_SAMPLE_POINTS; i++)
         {
             gps_buffer[i][0] = gps.location.lat();
@@ -45,7 +44,7 @@ void gpsLoop()
             temp_gps_altitude += gps.altitude.meters();
             temp_gps_altitude += ",";
 
-            
+
 
             // MN_DEBUG("GPS Loop : ");
             // MN_DEBUGLN(i);
@@ -71,11 +70,11 @@ TinyGPSPlus gps;
 SoftwareSerial gpsSerial(GPS_TX_PIN, GPS_RX_PIN); // RX, TX
 char buffer[100];
 
-void printData()
+void updateValues(int i)
 {
   if (gps.location.isUpdated())
   {
-    double lat = gps.location.lat();
+    /*double lat = gps.location.lat();
     double lng = gps.location.lng();
 
     double altitude = gps.altitude.meters();
@@ -93,7 +92,19 @@ void printData()
              "Date/Time: %d-%02d-%02d %02d:%02d:%02d",
              lat, lng, altitude, year, month, day, hour, minute, second);
 
-    Serial.println(buffer);
+    Serial.println(buffer);*/
+
+    gps_buffer[i][0] = gps.location.lat();
+    temp_gps_latitude += String(gps.location.lat());
+    temp_gps_latitude += ",";
+
+    gps_buffer[i][1] = gps.location.lng();
+    temp_gps_longitude += String(gps.location.lng());
+    temp_gps_longitude += ",";
+
+    gps_buffer[i][2] = gps.altitude.meters();
+    temp_gps_altitude += String(gps.altitude.meters());
+    temp_gps_altitude += ",";
   }
 }
 
@@ -105,13 +116,37 @@ void gpsSetup()
 
 void gpsLoop()
 {
-  while (gpsSerial.available() > 0)
+
+  if (gps_mutex)
   {
-    if (gps.encode(gpsSerial.read()))
+    temp_gps_latitude = "";
+    temp_gps_longitude = "";
+    temp_gps_altitude = "";
+    for (int i = 0; i < GPS_SAMPLE_POINTS; i++)
     {
-      printData();
+      while(gpsSerial.available() > 0)
+      {
+        if (gps.encode(gpsSerial.read()))
+        {
+          updateValues(i);
+          break;
+        }
+      }
+
+      MN_DEBUG("GPS Loop : ");
+      MN_DEBUGLN(i);
+
+      if (GPS_SAMPLE_POINTS - 1 == i)
+      {
+        gps_mutex = false;
+      }
+      delay(ONE_SEC / GPS_SAMPLING_RATE);
     }
+  }
+  else
+  {
+    delay(10);
   }
 }
 
-#endif // !GPS_HELPER_H 
+#endif // !GPS_HELPER_H

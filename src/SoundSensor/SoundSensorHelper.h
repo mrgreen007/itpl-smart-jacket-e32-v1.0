@@ -64,7 +64,6 @@ void soundSensorSetup()
     MN_DEBUGLN("SoundSensor Setup");
     pinMode(SOUND_A0_PIN, INPUT);
     pinMode(SOUND_D0_PIN, INPUT);
-    delay(50);
 }
 
 void soundSensorLoop()
@@ -72,7 +71,6 @@ void soundSensorLoop()
     if (sound_sensor_mutex)
     {
         temp_sound_db = "";
-        start_timestamp = millis(); // should be modified
         for (int i = 0; i < SOUND_SAMPLE_POINTS; i++)
         {
             sound_sensor_buffer[i][0] = digitalIo();
@@ -80,7 +78,6 @@ void soundSensorLoop()
             temp_sound_db += ",";
             if (SOUND_SAMPLE_POINTS - 1 == i)
             {
-                end_timestamp = millis(); // should be modified
                 sound_sensor_mutex = false;
             }
             delay(ONE_SEC / SOUND_SAMPLING_RATE);

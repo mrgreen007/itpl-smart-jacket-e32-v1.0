@@ -10,8 +10,6 @@ FirebaseAuth auth;
 FirebaseConfig config;
 
 String path = "";
-float temp_value;
-float hum_value;
 
 void firebaseSetup()
 {
@@ -39,18 +37,24 @@ bool fbSilentUpdate(FirebaseJson &json)
 
 bool jsonSetter(FirebaseJson &json)
 {
-    /*MN_DEBUGLN(temp_accelero_X);
+    if (temp_hum_buffer[0] != -100.00) updated_temperature = temp_temperature;
+    if (temp_hum_buffer[1] != -100.00) updated_humidity = temp_humidity;
+
+    MN_DEBUGLN(temp_accelero_X);
     MN_DEBUGLN(temp_accelero_Y);
     MN_DEBUGLN(temp_accelero_Z);
     MN_DEBUGLN(temp_gyro_X);
     MN_DEBUGLN(temp_gyro_Y);
     MN_DEBUGLN(temp_gyro_Z);
-    MN_DEBUGLN(current_temperature);
-    MN_DEBUGLN(current_humidity);
+
     MN_DEBUGLN(temp_gps_altitude);
     MN_DEBUGLN(temp_gps_latitude);
     MN_DEBUGLN(temp_gps_longitude);
-    MN_DEBUGLN(temp_sound_db); */
+
+    MN_DEBUGLN(updated_temperature);
+    MN_DEBUGLN(updated_humidity);
+
+    MN_DEBUGLN(temp_sound_db);
 
     json.set("A_X", temp_accelero_X);
     json.set("A_Y", temp_accelero_Y);
@@ -58,24 +62,13 @@ bool jsonSetter(FirebaseJson &json)
     json.set("G_X", temp_gyro_X);
     json.set("G_Y", temp_gyro_Y);
     json.set("G_Z", temp_gyro_Z);
-    if (current_temperature != -100)
-    {
-        json.set("Temp", current_temperature);
-        temp_value = current_temperature;
-    }
-    else
-    {
-        json.set("Temp", temp_value);
-    }
-    if (current_humidity != -100)
-    {
-        json.set("Hum", current_humidity);
-        hum_value = current_humidity;
-    }
-    else
-    {
-        json.set("Hum", hum_value);
-    }
+
+    json.set("LAT", temp_gps_latitude);
+    json.set("LON", temp_gps_longitude);
+    json.set("ALT", temp_gps_altitude);
+
+    json.set("TEM", updated_temperature);
+    json.set("HUM", updated_humidity);
 
     json.set("SNL", temp_sound_db);
 

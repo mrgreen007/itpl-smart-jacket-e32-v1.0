@@ -5,10 +5,13 @@
 #include "SoundSensor/SoundSensorHelper.h"
 #include "Interfaces/BridgeInterface.h"
 #include "Firebase/FirebaseHelper.h"
+
+// :Temporary wifi creds:
 //const char *ssid = "LAPTOP-N8V9637C 6288";
 //const char *password = "%0T521o8";
 const char *ssid = "Koustav@wifi";
 const char *password = "india@123";
+
 String timestamp = "";
 
 void gpsHandlerTask(void *pvParameters)
@@ -76,17 +79,14 @@ void setup()
   firebaseSetup();
 
   xTaskCreate(gpsHandlerTask, "GPS Task", 4 * 1024, NULL, 1, NULL);
-
   xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);
-
   xTaskCreate(tempHumHandlerTask, "TH Task", 4 * 1024, NULL, 1, NULL);
-
-  xTaskCreate(soundSensorHandlerTask, "SoundSensor Task", 4 * 1024, NULL, 1, NULL);
+  xTaskCreate(soundSensorHandlerTask, "SNL Task", 4 * 1024, NULL, 1, NULL);
 }
 
 void loop()
 {
-  if (gyro_accelero_mutex == false) // && gps_mutex == false
+  if (!gyro_accelero_mutex && !gps_mutex && !sound_sensor_mutex)
   {
     MN_DEBUGLN(">>> buffer full <<<");
 
@@ -98,7 +98,8 @@ void loop()
     MN_DEBUGLN("[SUCCESS] Done!");
 
     gyro_accelero_mutex = true;
-    // gps_mutex = true;
+    gps_mutex = true;
+    sound_sensor_mutex = true;
   }
   digitalWrite(LED_PIN, !digitalRead(LED_PIN));
   delay(500);

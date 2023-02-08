@@ -8,12 +8,6 @@
 
 DHTesp dht;
 
-void tempHuSetup()
-{
-    MN_DEBUGLN("Temp Setup");
-    dht.setup(TEMP_HUM_PIN, DHTesp::DHT22);
-}
-
 float getTemperature()
 {
     float t = dht.getTemperature();
@@ -23,6 +17,7 @@ float getTemperature()
     }
     return -100.00;
 }
+
 float getHumidity()
 {
     float h = dht.getHumidity();
@@ -32,10 +27,20 @@ float getHumidity()
     }
     return -100.00;
 }
+
+void tempHuSetup()
+{
+    MN_DEBUGLN("Temp Setup");
+    dht.setup(TEMP_HUM_PIN, DHTesp::DHT22);
+}
+
 void tempHuLoop()
 {
-    current_temperature = getTemperature();
-    current_humidity = getHumidity();
+    temp_hum_buffer[0] = getTemperature();
+    temp_temperature = String(temp_hum_buffer[0]);
+    temp_hum_buffer[1] = getHumidity();
+    temp_humidity = String(temp_hum_buffer[1]);
+    
     delay(1000);
 }
 #endif
