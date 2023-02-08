@@ -39,7 +39,7 @@ bool fbSilentUpdate(FirebaseJson &json)
 
 bool jsonSetter(FirebaseJson &json)
 {
-    MN_DEBUGLN(temp_accelero_X);
+    /*MN_DEBUGLN(temp_accelero_X);
     MN_DEBUGLN(temp_accelero_Y);
     MN_DEBUGLN(temp_accelero_Z);
     MN_DEBUGLN(temp_gyro_X);
@@ -50,7 +50,7 @@ bool jsonSetter(FirebaseJson &json)
     MN_DEBUGLN(temp_gps_altitude);
     MN_DEBUGLN(temp_gps_latitude);
     MN_DEBUGLN(temp_gps_longitude);
-    MN_DEBUGLN(temp_sound_db);
+    MN_DEBUGLN(temp_sound_db); */
 
     json.set("A_X", temp_accelero_X);
     json.set("A_Y", temp_accelero_Y);
@@ -89,8 +89,8 @@ bool updateDB(const String &timestamp)
     {
         path = "/";
         path += timestamp;
-        // return true;
-        return fbSilentUpdate(payload);
+         return true;
+        //return fbSilentUpdate(payload);
     }
     return false;
 }

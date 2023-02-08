@@ -4,7 +4,7 @@
 #include "config.h"
 #include "./Interfaces/BridgeInterface.h"
 
-#include <TinyGPS++.h>
+/*#include <TinyGPS++.h>
 #include <SoftwareSerial.h>
 
 TinyGPSPlus gps;
@@ -45,10 +45,7 @@ void gpsLoop()
             temp_gps_altitude += gps.altitude.meters();
             temp_gps_altitude += ",";
 
-            /*
-            TODO: assign values to the buffer array
-            eg: gps_buffer[i][j] = some_value
-            */
+            
 
             // MN_DEBUG("GPS Loop : ");
             // MN_DEBUGLN(i);
@@ -65,5 +62,56 @@ void gpsLoop()
         delay(10);
     }
 }
+*/
+#include <Arduino.h>
+#include <TinyGPS++.h>
+#include <SoftwareSerial.h>
 
-#endif // !GPS_HELPER_H
+TinyGPSPlus gps;
+SoftwareSerial gpsSerial(GPS_TX_PIN, GPS_RX_PIN); // RX, TX
+char buffer[100];
+
+void printData()
+{
+  if (gps.location.isUpdated())
+  {
+    double lat = gps.location.lat();
+    double lng = gps.location.lng();
+
+    double altitude = gps.altitude.meters();
+
+    int year = gps.date.year();
+    int month = gps.date.month();
+    int day = gps.date.day();
+
+    int hour = gps.time.hour();
+    int minute = gps.time.minute();
+    int second = gps.time.second();
+
+    snprintf(buffer, sizeof(buffer),
+             "Latitude: %.8f, Longitude: %.8f, Altitude: %.2f m, "
+             "Date/Time: %d-%02d-%02d %02d:%02d:%02d",
+             lat, lng, altitude, year, month, day, hour, minute, second);
+
+    Serial.println(buffer);
+  }
+}
+
+void gpsSetup()
+{
+  gpsSerial.begin(9600);
+  Serial.println("\nStarting...");
+}
+
+void gpsLoop()
+{
+  while (gpsSerial.available() > 0)
+  {
+    if (gps.encode(gpsSerial.read()))
+    {
+      printData();
+    }
+  }
+}
+
+#endif // !GPS_HELPER_H 
