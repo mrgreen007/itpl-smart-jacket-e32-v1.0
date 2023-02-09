@@ -37,31 +37,34 @@ bool fbSilentUpdate(FirebaseJson &json)
 
 bool jsonSetter(FirebaseJson &json)
 {
-    int str_len = temp_temperature.length();
+    String temperature = temp_temperature;
+    String humidity = temp_humidity;
+    int str_len = temperature.length();
+
     if(str_len == 0)
     {
         String x = "x.x";
         for(int i=0; i<25; i++)
         {
-            temp_temperature += x;
-            temp_temperature += ",";
-            temp_humidity += x;
-            temp_humidity += ",";
+            temperature += x;
+            temperature += ",";
+            humidity += x;
+            humidity += ",";
         }
     }
-    else if(temp_temperature[str_len-1] != ',')
+    else if(temperature[str_len-1] != ',')
     {
-        String t = temp_temperature;
-        String h = temp_humidity;
-        temp_temperature = "";
-        temp_humidity = "";
+        String t = temperature;
+        String h = humidity;
+        temperature = "";
+        humidity = "";
 
         for (int i=0; i<25; i++)
         {
-            temp_temperature += t;
-            temp_temperature += ",";
-            temp_humidity += h;
-            temp_humidity += ",";
+            temperature += t;
+            temperature += ",";
+            humidity += h;
+            humidity += ",";
         }
     }
     
@@ -77,8 +80,8 @@ bool jsonSetter(FirebaseJson &json)
     MN_DEBUGLN(temp_gps_latitude);
     MN_DEBUGLN(temp_gps_longitude);
 
-    MN_DEBUGLN(temp_temperature);
-    MN_DEBUGLN(temp_humidity);
+    MN_DEBUGLN(temperature);
+    MN_DEBUGLN(humidity);
 
     MN_DEBUGLN(temp_sound_db);
 
@@ -93,8 +96,8 @@ bool jsonSetter(FirebaseJson &json)
     json.set("LON", temp_gps_longitude);
     json.set("ALT", temp_gps_altitude);
 
-    json.set("TEM", temp_temperature);
-    json.set("HUM", temp_humidity);
+    json.set("TEM", temperature);
+    json.set("HUM", humidity);
 
     json.set("SNL", temp_sound_db);
 
