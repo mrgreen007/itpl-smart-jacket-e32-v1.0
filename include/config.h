@@ -24,8 +24,8 @@
 #define GYRO_ACCELERO_SDA_PIN 21
 #define GYRO_ACCELERO_SCL_PIN 22
 #define TEMP_HUM_PIN 4
-#define SOUND_A0_PIN 18
-#define SOUND_D0_PIN 19
+#define SOUND_A0_PIN 35
+#define SOUND_D0_PIN 34
 #define GPS_RX_PIN 17
 #define GPS_TX_PIN 16
 

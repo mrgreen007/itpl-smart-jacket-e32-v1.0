@@ -70,7 +70,7 @@ TinyGPSPlus gps;
 SoftwareSerial gpsSerial(GPS_TX_PIN, GPS_RX_PIN); // RX, TX
 char buffer[100];
 
-/*void updateValues()
+void updateValues()
 {
   if (gps.location.isUpdated())
   {
@@ -94,15 +94,48 @@ char buffer[100];
 
     Serial.println(buffer);
   }
-}*/
+}
+
+void displayInfo()
+{
+  Serial.print(F("Location: "));
+  if (gps.location.isValid()){
+    Serial.print("Lat: ");
+    Serial.print(gps.location.lat(), 6);
+    Serial.print(F(","));
+    Serial.print("Lng: ");
+    Serial.print(gps.location.lng(), 6);
+    Serial.println();
+  }  
+  else
+  {
+    Serial.print(F("INVALID"));
+  }
+}
 
 void gpsSetup()
 {
   gpsSerial.begin(9600);
-  Serial.println("\nStarting...");
+  Serial.println("\nGPS Starting...");
 }
 
 void gpsLoop()
+{
+while(gpsSerial.available() > 0)
+      {
+        if (gps.encode(gpsSerial.read()))
+        {
+          displayInfo();
+          // if(gps.location.isUpdated())
+          // {
+          //   //updateValues();
+          //   displayInfo();
+          // }
+        }
+      }
+}
+
+void gpsLoop_()
 {
 
   if (gps_mutex)

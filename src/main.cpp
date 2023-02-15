@@ -9,8 +9,8 @@
 // :Temporary wifi creds:
 //const char *ssid = "LAPTOP-N8V9637C 6288";
 //const char *password = "%0T521o8";
-const char *ssid = "Koustav@wifi";
-const char *password = "india@123";
+const char *ssid = "ANKITA";
+const char *password = "an9123314645kita";
 
 String timestamp = "";
 
@@ -86,7 +86,7 @@ void setup()
 
 void loop()
 {
-  if (!gyro_accelero_mutex && !gps_mutex && !sound_sensor_mutex)
+  if (!gyro_accelero_mutex ) //&& !gps_mutex && !sound_sensor_mutex
   {
     MN_DEBUGLN(">>> buffer full <<<");
 
