@@ -10,8 +10,8 @@ DHTesp dht;
 
 void tempHuSetup()
 {
-    MN_DEBUGLN("Temp Setup");
     dht.setup(TEMP_HUM_PIN, DHTesp::DHT22);
+    MN_DEBUGLN_F("[OK] TempHum setup!");
 }
 
 void tempHuLoop()

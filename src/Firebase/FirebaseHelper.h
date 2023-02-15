@@ -18,6 +18,7 @@ void firebaseSetup()
 
     Firebase.begin(&config, &auth);
     Firebase.reconnectWiFi(true);
+    MN_DEBUGLN_F("[OK] Firebase setup!");
 }
 
 bool fbSilentUpdate(FirebaseJson &json)
@@ -67,7 +68,38 @@ bool jsonSetter(FirebaseJson &json)
             humidity += ",";
         }
     }
-    
+
+    if(gps_index_counter != 0)
+    {
+        String lat_last_val = String(gps_buffer[gps_index_counter-1][0]);
+        String lon_last_val = String(gps_buffer[gps_index_counter-1][1]);
+        String alt_last_val = String(gps_buffer[gps_index_counter-1][2]);
+
+        for (int i = gps_index_counter; i < GPS_SAMPLE_POINTS; i++)
+        {
+            temp_gps_latitude += lat_last_val;
+            temp_gps_latitude += ",";
+            temp_gps_longitude += lon_last_val;
+            temp_gps_longitude += ",";
+            temp_gps_altitude += alt_last_val;
+            temp_gps_altitude += ",";
+        }
+        
+        gps_index_counter = 0;
+    }
+    else if(gps_index_counter == 0 && temp_gps_latitude == "")
+    {
+        String x = "0.0";
+        for (int i = 0; i < GPS_SAMPLE_POINTS; i++)
+        {
+            temp_gps_latitude += x;
+            temp_gps_latitude += ",";
+            temp_gps_longitude += x;
+            temp_gps_longitude += ",";
+            temp_gps_altitude += x;
+            temp_gps_altitude += ",";
+        }
+    }  
 
     MN_DEBUGLN(temp_accelero_X);
     MN_DEBUGLN(temp_accelero_Y);

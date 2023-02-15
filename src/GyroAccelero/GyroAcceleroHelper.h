@@ -12,17 +12,15 @@ Adafruit_MPU6050 mpu;
 
 void gyroAcceleroSetup()
 {
-    MN_DEBUGLN("GyroAccelero Setup");
-
     if (!mpu.begin())
     {
-        MN_DEBUGLN("Failed to find MPU6050 chip");
+        MN_DEBUGLN_F("[WAITING] Failed to find MPU6050 chip!");
         while (1)
         {
             delay(100);
         }
     }
-    MN_DEBUGLN("MPU6050 Found!");
+    MN_DEBUGLN_F("[OK] GyroAccelero setup!");
 
     mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
     mpu.setGyroRange(MPU6050_RANGE_500_DEG);

@@ -3,80 +3,21 @@
 
 #include "config.h"
 #include "./Interfaces/BridgeInterface.h"
-
-/*#include <TinyGPS++.h>
-#include <SoftwareSerial.h>
-
-TinyGPSPlus gps;
-SoftwareSerial SerialGPS(GPS_TX_PIN, GPS_RX_PIN);     //RX(GPS Tx pin), TX(GPS Rx pin)
-
-void gpsSetup()
-{
-    MN_DEBUGLN("GPS Setup");
-    SerialGPS.begin(9600);
-    if (millis() > 5000 && gps.charsProcessed() < 10)
-    {
-        MN_DEBUGLN("GPS NOT DETECTED!");
-        //while (true);
-    }
-    MN_DEBUGLN("GPS Detected");
-    delay(50);
-}
-
-void gpsLoop()
-{
-    if (gps_mutex)
-    {
-        temp_gps_latitude = "";
-        temp_gps_longitude = "";
-        temp_gps_altitude = "";
-        for (int i = 0; i < GPS_SAMPLE_POINTS; i++)
-        {
-            gps_buffer[i][0] = gps.location.lat();
-            temp_gps_latitude += gps.location.lat();
-            temp_gps_latitude += ",";
-
-            gps_buffer[i][1] = gps.location.lng();
-            temp_gps_longitude += gps.location.lng();
-            temp_gps_longitude += ",";
-
-            gps_buffer[i][2] = gps.altitude.meters();
-            temp_gps_altitude += gps.altitude.meters();
-            temp_gps_altitude += ",";
-
-
-
-            // MN_DEBUG("GPS Loop : ");
-            // MN_DEBUGLN(i);
-
-            if (GPS_SAMPLE_POINTS - 1 == i)
-            {
-                gps_mutex = false;
-            }
-            delay(ONE_SEC / GPS_SAMPLING_RATE);
-        }
-    }
-    else
-    {
-        delay(10);
-    }
-}
-*/
-#include <Arduino.h>
 #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
 
 TinyGPSPlus gps;
-SoftwareSerial gpsSerial(GPS_TX_PIN, GPS_RX_PIN); // RX, TX
+SoftwareSerial gpsSerial(GPS_TX_PIN, GPS_RX_PIN); // //RX(GPS Tx pin), TX(GPS Rx pin)
 char buffer[100];
 
-void updateValues()
+int gps_index_counter = 0;
+
+/*void updateValues_()
 {
   if (gps.location.isUpdated())
   {
     double lat = gps.location.lat();
     double lng = gps.location.lng();
-
     double altitude = gps.altitude.meters();
 
     int year = gps.date.year();
@@ -94,93 +35,68 @@ void updateValues()
 
     Serial.println(buffer);
   }
-}
+}*/
 
-void displayInfo()
+void updateValues()
 {
-  Serial.print(F("Location: "));
-  if (gps.location.isValid()){
-    Serial.print("Lat: ");
-    Serial.print(gps.location.lat(), 6);
-    Serial.print(F(","));
-    Serial.print("Lng: ");
-    Serial.print(gps.location.lng(), 6);
-    Serial.println();
-  }  
+  if (gps.location.isValid())
+  {
+    // Serial.print("Lat: ");
+    // Serial.print(gps.location.lat(), 6);
+    // Serial.print(F(","));
+    // Serial.print("Lng: ");
+    // Serial.print(gps.location.lng(), 6);
+    // Serial.println();
+
+    if (gps_mutex)
+    {
+      if (gps_index_counter == 0)
+      {
+        temp_gps_latitude = "";
+        temp_gps_longitude = "";
+        temp_gps_altitude = "";
+      }
+
+      gps_buffer[gps_index_counter][0] = gps.location.lat();
+      temp_gps_latitude += String(gps.location.lat());
+      temp_gps_latitude += ",";
+
+      gps_buffer[gps_index_counter][1] = gps.location.lng();
+      temp_gps_longitude += String(gps.location.lng());
+      temp_gps_longitude += ",";
+
+      gps_buffer[gps_index_counter][2] = gps.altitude.meters();
+      temp_gps_altitude += String(gps.altitude.meters());
+      temp_gps_altitude += ",";
+
+      if (GPS_SAMPLE_POINTS - 1 == gps_index_counter)
+      {
+        gps_mutex = false;
+        gps_index_counter = -1;
+      }
+      gps_index_counter++;
+    }
+  }
   else
   {
-    Serial.print(F("INVALID"));
+    // Invalid location
   }
 }
 
 void gpsSetup()
 {
   gpsSerial.begin(9600);
-  Serial.println("\nGPS Starting...");
+  MN_DEBUGLN_F("[OK] GPS setup!");
 }
 
 void gpsLoop()
 {
-while(gpsSerial.available() > 0)
-      {
-        if (gps.encode(gpsSerial.read()))
-        {
-          displayInfo();
-          // if(gps.location.isUpdated())
-          // {
-          //   //updateValues();
-          //   displayInfo();
-          // }
-        }
-      }
-}
-
-void gpsLoop_()
-{
-
-  if (gps_mutex)
+  while (gpsSerial.available() > 0)
   {
-    temp_gps_latitude = "";
-    temp_gps_longitude = "";
-    temp_gps_altitude = "";
-    for (int i = 0; i < GPS_SAMPLE_POINTS; i++)
+    if (gps.encode(gpsSerial.read()))
     {
-      while(gpsSerial.available() > 0)
-      {
-        if (gps.encode(gpsSerial.read()))
-        {
-          if(gps.location.isUpdated())
-          {
-            gps_buffer[i][0] = gps.location.lat();
-            temp_gps_latitude += String(gps.location.lat());
-            temp_gps_latitude += ",";
-
-            gps_buffer[i][1] = gps.location.lng();
-            temp_gps_longitude += String(gps.location.lng());
-            temp_gps_longitude += ",";
-
-            gps_buffer[i][2] = gps.altitude.meters();
-            temp_gps_altitude += String(gps.altitude.meters());
-            temp_gps_altitude += ",";
-            break;
-          }
-        }
-      }
-
-      // MN_DEBUG("GPS Loop : ");
-      // MN_DEBUGLN(i);
-
-      if (GPS_SAMPLE_POINTS - 1 == i)
-      {
-        gps_mutex = false;
-      }
-      // delay(ONE_SEC / GPS_SAMPLING_RATE);
-      delay(10);
+      updateValues();
     }
-  }
-  else
-  {
-    delay(10);
   }
 }
 

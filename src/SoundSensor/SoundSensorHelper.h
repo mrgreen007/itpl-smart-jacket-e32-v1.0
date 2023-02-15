@@ -61,9 +61,9 @@ int digitalIo()
 
 void soundSensorSetup()
 {
-    MN_DEBUGLN("SoundSensor Setup");
     pinMode(SOUND_A0_PIN, INPUT);
     pinMode(SOUND_D0_PIN, INPUT);
+    MN_DEBUGLN_F("[OK] Sound sensor setup!");
 }
 
 void soundSensorLoop()
