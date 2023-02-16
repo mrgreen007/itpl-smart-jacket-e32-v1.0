@@ -58,15 +58,15 @@ void updateValues()
       }
 
       gps_buffer[gps_index_counter][0] = gps.location.lat();
-      temp_gps_latitude += String(gps.location.lat());
+      temp_gps_latitude += String(gps.location.lat(), 6U);
       temp_gps_latitude += ",";
 
       gps_buffer[gps_index_counter][1] = gps.location.lng();
-      temp_gps_longitude += String(gps.location.lng());
+      temp_gps_longitude += String(gps.location.lng(), 6U);
       temp_gps_longitude += ",";
 
       gps_buffer[gps_index_counter][2] = gps.altitude.meters();
-      temp_gps_altitude += String(gps.altitude.meters());
+      temp_gps_altitude += String(gps.altitude.meters(), 6U);
       temp_gps_altitude += ",";
 
       if (GPS_SAMPLE_POINTS - 1 == gps_index_counter)

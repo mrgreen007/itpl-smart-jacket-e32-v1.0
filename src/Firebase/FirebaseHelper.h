@@ -71,9 +71,9 @@ bool jsonSetter(FirebaseJson &json)
 
     if(gps_index_counter != 0)
     {
-        String lat_last_val = String(gps_buffer[gps_index_counter-1][0]);
-        String lon_last_val = String(gps_buffer[gps_index_counter-1][1]);
-        String alt_last_val = String(gps_buffer[gps_index_counter-1][2]);
+        String lat_last_val = String(gps_buffer[gps_index_counter-1][0], 6U);
+        String lon_last_val = String(gps_buffer[gps_index_counter-1][1], 6U);
+        String alt_last_val = String(gps_buffer[gps_index_counter-1][2], 6U);
 
         for (int i = gps_index_counter; i < GPS_SAMPLE_POINTS; i++)
         {
@@ -108,9 +108,9 @@ bool jsonSetter(FirebaseJson &json)
     MN_DEBUGLN(temp_gyro_Y);
     MN_DEBUGLN(temp_gyro_Z);
 
-    MN_DEBUGLN(temp_gps_altitude);
     MN_DEBUGLN(temp_gps_latitude);
     MN_DEBUGLN(temp_gps_longitude);
+    MN_DEBUGLN(temp_gps_altitude);
 
     MN_DEBUGLN(temperature);
     MN_DEBUGLN(humidity);

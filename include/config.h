@@ -43,7 +43,11 @@
 #define SOUND_SAMPLE_POINTS (SOUND_SAMPLING_RATE * BUFFER_TIME)
 
 // Firebase creds
-#define FIREBASE_HOST "https://data-10cce-default-rtdb.firebaseio.com/"
-#define FIREBASE_AUTH "XLEA8AwVcE8jibJd2gBWMtL9Yna5vRHUH1CNch1A"
+// For testing
+#define FIREBASE_HOST_TEST "https://data-10cce-default-rtdb.firebaseio.com/"
+#define FIREBASE_AUTH_TEST "XLEA8AwVcE8jibJd2gBWMtL9Yna5vRHUH1CNch1A"
+// For production
+#define FIREBASE_HOST "https://itpl-smart-jacket-v1-default-rtdb.firebaseio.com/"
+#define FIREBASE_AUTH "sMgJhFByyBzpDk0hQc5NdzVXAzVNDpgtqe75uKcz"
 
 #endif
