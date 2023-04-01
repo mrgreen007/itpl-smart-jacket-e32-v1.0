@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 #define MAIN_DEBUG
+#define TEST
 
 #ifdef MAIN_DEBUG
 #define MN_DEBUG(x) Serial.print(x)
@@ -43,11 +44,12 @@
 #define SOUND_SAMPLE_POINTS (SOUND_SAMPLING_RATE * BUFFER_TIME)
 
 // Firebase creds
-// For testing
-#define FIREBASE_HOST_TEST "https://data-10cce-default-rtdb.firebaseio.com/"
-#define FIREBASE_AUTH_TEST "XLEA8AwVcE8jibJd2gBWMtL9Yna5vRHUH1CNch1A"
-// For production
+#ifdef TEST
+#define FIREBASE_HOST "https://data-10cce-default-rtdb.firebaseio.com/"
+#define FIREBASE_AUTH "XLEA8AwVcE8jibJd2gBWMtL9Yna5vRHUH1CNch1A"
+#else
 #define FIREBASE_HOST "https://itpl-smart-jacket-v1-default-rtdb.firebaseio.com/"
 #define FIREBASE_AUTH "sMgJhFByyBzpDk0hQc5NdzVXAzVNDpgtqe75uKcz"
+#endif
 
 #endif

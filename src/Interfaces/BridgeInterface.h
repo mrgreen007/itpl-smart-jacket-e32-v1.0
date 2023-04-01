@@ -12,8 +12,8 @@ bool gyro_accelero_mutex = true;
 bool gps_mutex = true;
 bool sound_sensor_mutex = true;
 
-time_t start_timestamp = 0;
-time_t end_timestamp = 0;
+String start_timestamp = "";
+String end_timestamp = "";
 
 // temporary strings
 String temp_accelero_X = "";

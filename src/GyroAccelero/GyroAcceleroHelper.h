@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include "./Interfaces/BridgeInterface.h"
+#include "./Time/TimeHelper.h"
 
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
@@ -38,7 +39,7 @@ void gyroAcceleroLoop()
         temp_gyro_X = "";
         temp_gyro_Y = "";
         temp_gyro_Z = "";
-        start_timestamp = millis(); // should be modified
+        start_timestamp = getTimestamp(); // should be modified
         for (int i = 0; i < GA_SAMPLE_POINTS; i++)
         {
 
@@ -74,7 +75,7 @@ void gyroAcceleroLoop()
 
             if (GA_SAMPLE_POINTS - 1 == i)
             {
-                end_timestamp = millis(); // should be modified
+                end_timestamp = getTimestamp(); // should be modified
                 gyro_accelero_mutex = false;
             }
 

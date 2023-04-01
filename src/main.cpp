@@ -5,6 +5,7 @@
 #include "SoundSensor/SoundSensorHelper.h"
 #include "Interfaces/BridgeInterface.h"
 #include "Firebase/FirebaseHelper.h"
+#include "Time/TimeHelper.h"
 
 // :Temporary wifi creds:
 // const char *ssid = "LAPTOP-N8V9637C 6288";
@@ -86,6 +87,9 @@ void setup()
   }
   MN_DEBUGLN("\nConnected to the WiFi network!");
 
+  //Setup Time
+  timeSetup();
+
   device_id = getUniqueID();
   MN_DEBUG("Device ID: ");
   MN_DEBUGLN(device_id);
@@ -105,9 +109,9 @@ void loop()
     gps_mutex = false;
     MN_DEBUGLN(">>> buffer full <<<");
     MN_DEBUGLN("[START] Sending data...");
-    timestamp = String(start_timestamp);
+    timestamp = start_timestamp;
     timestamp += "-";
-    timestamp += String(end_timestamp);
+    timestamp += end_timestamp;
     updateDB(timestamp);
     MN_DEBUGLN("[SUCCESS] Done!");
 

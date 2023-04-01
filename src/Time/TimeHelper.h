@@ -19,12 +19,8 @@ const int daylightOffset_sec = 0;
 
 struct tm timeinfo;
 
-TinyGPSPlus gps;
-SoftwareSerial gpsSerial(GPS_TX_PIN, GPS_RX_PIN);
-
 void getLocalTime()
 {
-
     if (!getLocalTime(&timeinfo))
     {
         Serial.println("Failed to obtain time");
@@ -32,7 +28,7 @@ void getLocalTime()
     }
 }
 
-void time_string(char time_str[])
+void makeTimestamp(char time_str[])
 {
     int i = 0;
     char hr[3], min[4], sec[10], yr[5], mn[3], d[3];
@@ -93,42 +89,49 @@ void time_string(char time_str[])
         strcat(time_str, sec);
 }
 
-void ConfigTime()//Call this function once to configure the time
+void ConfigTime() // Call this function once to configure the time
 {
-    if (gpsSerial.available() > 0)
-    {
-        if (gps.encode(gpsSerial.read()))
-        {
-            if (gps.time.isValid())
-            {
-                Serial.println("Fetching the time from GPS and storing in time library");
-                setTime((int)gps.time.hour(), (int)gps.time.minute(), (int)gps.time.second(), (int)gps.date.day(), (int)gps.date.month(), (int)gps.date.year());
-            }
-        }
-    }
+    // if (gpsSerial.available() > 0)
+    // {
+    //     if (gps.encode(gpsSerial.read()))
+    //     {
+    //         if (gps.time.isValid())
+    //         {
+    //             Serial.println("Fetching the time from GPS and storing in time library");
+    //             setTime((int)gps.time.hour(), (int)gps.time.minute(), (int)gps.time.second(), (int)gps.date.day(), (int)gps.date.month(), (int)gps.date.year());
+    //         }
+    //     }
+    // }
 
-    else
-    {
-        configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
-        getLocalTime();
-        Serial.println("Fetching the time from NTP server and storing in time library");
-        setTime(timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec, timeinfo.tm_mday, timeinfo.tm_mon, timeinfo.tm_year + 1900);
-    }
+    configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+    getLocalTime();
+    Serial.println("Fetching the time from NTP server and storing in time library");
+    setTime(timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec, timeinfo.tm_mday, timeinfo.tm_mon, timeinfo.tm_year + 1900);
 }
-time_t prevDisplay = 0;
 
-char *GetTime()//Call this function to get the current time
+String getTimestamp() // Call this function to get the current time
 {
     char time_str[27] = "";
     if (timeStatus() != timeNotSet)
     {
-        if (now() != prevDisplay)
-        { // update the display only if time has changed
-            prevDisplay = now();
-            time_string(time_str);
-            return time_str;
-        }
+        makeTimestamp(time_str);
+        return (String)time_str;
     }
+    return String(millis());
+}
+
+void timeSetup()
+{
+    // setSyncProvider(timeUpdateManager);
+    // setSyncInterval(12 * 3600); // 12*3600 sec interval for system time sync
+
+    ConfigTime();
+    if (timeStatus() != timeSet)
+    {
+        MN_DEBUGLN_F("Unable to sync !");
+    }
+
+    MN_DEBUGLN(getTimestamp());
 }
 
 #endif
