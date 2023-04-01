@@ -1,5 +1,5 @@
-// #ifndef TIME_STAMP_H
-#define TIME_STAMP_H
+#ifndef TIME_HELPER_H
+#define TIME_HELPER_H
 
 #include "config.h"
 #include "./Interfaces/BridgeInterface.h"
@@ -130,3 +130,5 @@ char *GetTime()//Call this function to get the current time
         }
     }
 }
+
+#endif
