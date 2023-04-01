@@ -14,7 +14,7 @@
 #include <SoftwareSerial.h>
 
 const char *ntpServer = "pool.ntp.org";
-const long gmtOffset_sec = 0;
+const long gmtOffset_sec = 19800;
 const int daylightOffset_sec = 0;
 
 struct tm timeinfo;
