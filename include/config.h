@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include <Arduino.h>
+#include <ArduinoJson.h>
 
 #define MAIN_DEBUG
 #define TEST
@@ -29,6 +30,9 @@
 #define SOUND_D0_PIN 34
 #define GPS_RX_PIN 17
 #define GPS_TX_PIN 16
+#define RFID_SDA_PIN 5
+#define RFID_RST_PIN 27
+#define BUZZER_GPIO_PIN 32
 
 // Editable
 #define GA_SAMPLING_RATE 5        // In Hz [max value: 1000]

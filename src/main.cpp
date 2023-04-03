@@ -6,12 +6,14 @@
 #include "Interfaces/BridgeInterface.h"
 #include "Firebase/FirebaseHelper.h"
 #include "Time/TimeHelper.h"
+#include "Buzzer/BuzzerHelper.h"
+#include "RFID/RfidHelper.h"
 
 // :Temporary wifi creds:
 // const char *ssid = "LAPTOP-N8V9637C 6288";
 // const char *password = "%0T521o8";
-const char *ssid = "ANKITA";
-const char *password = "an9123314645kita";
+const char *ssid = "DESKTOP-IBH0VQ6 0455";
+const char *password = "o7597C0:";
 
 String timestamp = "";
 String device_id = "";
@@ -69,6 +71,16 @@ void soundSensorHandlerTask(void *pvParameters)
   }
 }
 
+void buzzerHandlerTask(void *pvParameters)
+{
+  (void)pvParameters;
+  buzzerSetup();
+  while (true)
+  {
+    buzzerLoop();
+  }
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -90,6 +102,9 @@ void setup()
   //Setup Time
   timeSetup();
 
+  //Setup RFID
+  rfidSetup();
+
   device_id = getUniqueID();
   MN_DEBUG("Device ID: ");
   MN_DEBUGLN(device_id);
@@ -100,6 +115,7 @@ void setup()
   xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);
   xTaskCreate(tempHumHandlerTask, "TH Task", 4 * 1024, NULL, 1, NULL);
   xTaskCreate(soundSensorHandlerTask, "SNL Task", 4 * 1024, NULL, 1, NULL);
+  xTaskCreate(buzzerHandlerTask, "Buzzer Task", 4 * 1024, NULL, 1, NULL);
 }
 
 void loop()
@@ -119,6 +135,7 @@ void loop()
     gps_mutex = true;
     sound_sensor_mutex = true;
   }
+  rfidLoop();
   digitalWrite(LED_PIN, !digitalRead(LED_PIN));
   delay(500);
 }

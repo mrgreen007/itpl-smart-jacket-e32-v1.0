@@ -11,6 +11,8 @@ float temp_hum_buffer[2] = {-100};
 bool gyro_accelero_mutex = true;
 bool gps_mutex = true;
 bool sound_sensor_mutex = true;
+bool buzzer_mutex = true;
+bool rfid_mutex = true;
 
 String start_timestamp = "";
 String end_timestamp = "";
