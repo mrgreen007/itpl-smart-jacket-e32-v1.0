@@ -35,8 +35,8 @@ void makeTimestamp(char time_str[])
     sprintf(yr, "%d", year());
     strcat(time_str, yr);
     strcat(time_str, "-");
-    sprintf(mn, "%d", month());
-    if (month() < 10)
+    sprintf(mn, "%d", month()+1);
+    if (month()+1 < 10)
     {
         strcat(time_str, "0");
         strcat(time_str, mn);

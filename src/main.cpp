@@ -75,6 +75,7 @@ void buzzerHandlerTask(void *pvParameters)
 {
   (void)pvParameters;
   buzzerSetup();
+
   while (true)
   {
     buzzerLoop();
@@ -105,11 +106,16 @@ void setup()
   //Setup RFID
   rfidSetup();
 
+  // Setup Firebase
+  firebaseSetup();
+
   device_id = getUniqueID();
   MN_DEBUG("Device ID: ");
   MN_DEBUGLN(device_id);
 
-  firebaseSetup();
+  // Assign path
+  fb_path = "/Devices/";
+  fb_path += device_id;
 
   xTaskCreate(gpsHandlerTask, "GPS Task", 4 * 1024, NULL, 1, NULL);
   xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);

@@ -39,7 +39,7 @@ void gyroAcceleroLoop()
         temp_gyro_X = "";
         temp_gyro_Y = "";
         temp_gyro_Z = "";
-        start_timestamp = getTimestamp(); // should be modified
+        start_timestamp = getTimestamp();
         for (int i = 0; i < GA_SAMPLE_POINTS; i++)
         {
 
@@ -70,12 +70,9 @@ void gyroAcceleroLoop()
             temp_gyro_Z += g.gyro.z;
             temp_gyro_Z += ",";
 
-            // MN_DEBUG("GyroAccelero Loop : ");
-            // MN_DEBUG(i);
-
             if (GA_SAMPLE_POINTS - 1 == i)
             {
-                end_timestamp = getTimestamp(); // should be modified
+                end_timestamp = getTimestamp();
                 gyro_accelero_mutex = false;
             }
 

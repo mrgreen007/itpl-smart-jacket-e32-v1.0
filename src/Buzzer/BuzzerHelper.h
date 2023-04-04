@@ -3,23 +3,23 @@
 #include "Buzzer/pitches.h"
 #include "config.h"
 
-enum buzzTypes{continuos ,once ,danger ,interval ,tone1 ,tone2 ,tone3 ,tone4 ,stop } alertType;
+enum buzzTypes{stop, continuos ,once ,danger ,interval ,tone1 ,tone2 ,tone3 ,tone4} alertType;
 
 void stopBuzzer()
 {
     alertType = stop;
-    digitalWrite(BUZZER_GPIO_PIN, LOW);
+    digitalWrite(BUZZER_PIN, LOW);
 }
 
 void beepContinuos()
 {
-    digitalWrite(BUZZER_GPIO_PIN, !digitalRead(BUZZER_GPIO_PIN));
+    digitalWrite(BUZZER_PIN, !digitalRead(BUZZER_PIN));
     delay(800);
 }
 
 void beepOnce()
 {
-    digitalWrite(BUZZER_GPIO_PIN, HIGH);
+    digitalWrite(BUZZER_PIN, HIGH);
     delay(1000);
     stopBuzzer();
 }
@@ -28,17 +28,17 @@ void beepDanger()
 {
     for (int i = 700; i < 800; i++)
     {
-        tone(BUZZER_GPIO_PIN, i);
+        tone(BUZZER_PIN, i);
         delay(20);
         MN_DEBUGLN(i);
     }
     for (int i = 800; i > 700; i--)
     {
-        tone(BUZZER_GPIO_PIN, i);
+        tone(BUZZER_PIN, i);
         delay(20);
         MN_DEBUGLN(i);
     }
-    noTone(BUZZER_GPIO_PIN);
+    noTone(BUZZER_PIN);
     stopBuzzer();
 }
 
@@ -46,7 +46,7 @@ void beep(int dur, int interval)
 {
     for (int i = 1; i <= round((double)dur / (double)interval); i++)
     {
-        digitalWrite(BUZZER_GPIO_PIN,!digitalRead(BUZZER_GPIO_PIN));
+        digitalWrite(BUZZER_PIN,!digitalRead(BUZZER_PIN));
         delay(interval);
     }
     stopBuzzer();
@@ -63,10 +63,10 @@ void beepTone1()
     for (int thisNote = 0; thisNote < 23; thisNote++)
     {
         int noteDuration = 1000 / noteDurations[thisNote];
-        tone(BUZZER_GPIO_PIN, melody[thisNote], noteDuration); // play tone
+        tone(BUZZER_PIN, melody[thisNote], noteDuration); // play tone
         int pauseBetweenNotes = noteDuration * 1.30;
         delay(pauseBetweenNotes); // delay
-        noTone(BUZZER_GPIO_PIN);  // tone off
+        noTone(BUZZER_PIN);  // tone off
     }
     stopBuzzer();
 }
@@ -78,10 +78,10 @@ void beepTone2()
     for (int thisNote = 0; thisNote < 9; thisNote++)
     {
         int noteDuration = 1000 / noteDurations[thisNote];
-        tone(BUZZER_GPIO_PIN, melody2[thisNote], noteDuration);
+        tone(BUZZER_PIN, melody2[thisNote], noteDuration);
         int pauseBetweenNotes = noteDuration * 1.30;
         delay(pauseBetweenNotes);
-        noTone(BUZZER_GPIO_PIN);
+        noTone(BUZZER_PIN);
     }
     stopBuzzer();
 }
@@ -94,10 +94,10 @@ void beepTone3()
     for (int thisNote = 0; thisNote < 9; thisNote++)
     {
         int noteDuration = 1000 / noteDurations[thisNote];
-        tone(BUZZER_GPIO_PIN, melody3[thisNote], noteDuration);
+        tone(BUZZER_PIN, melody3[thisNote], noteDuration);
         int pauseBetweenNotes = noteDuration * 1.30;
         delay(pauseBetweenNotes);
-        noTone(BUZZER_GPIO_PIN);
+        noTone(BUZZER_PIN);
     }
     stopBuzzer();
 }
@@ -114,17 +114,17 @@ void beepTone4()
     for (int thisNote = 0; thisNote < 43; thisNote++)
     {
         int noteDuration = 1000 / noteDurations[thisNote];
-        tone(BUZZER_GPIO_PIN, melody4[thisNote], noteDuration);
+        tone(BUZZER_PIN, melody4[thisNote], noteDuration);
         int pauseBetweenNotes = noteDuration * 1.30;
         delay(pauseBetweenNotes);
-        noTone(BUZZER_GPIO_PIN);
+        noTone(BUZZER_PIN);
     }
     stopBuzzer();
 }
 
 void buzzerSetup()
 {
-    pinMode(BUZZER_GPIO_PIN, OUTPUT);
+    pinMode(BUZZER_PIN, OUTPUT);
     MN_DEBUGLN_F("[OK] Buzzer sensor setup!");
 }
 
@@ -164,7 +164,7 @@ void buzzerLoop()
     }
     else
     {
-        delay(10);
+        delay(100);
     }
 }
 #endif

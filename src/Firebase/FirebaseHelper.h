@@ -9,7 +9,7 @@ FirebaseData firebaseData1;
 FirebaseAuth auth;
 FirebaseConfig config;
 
-String path = "/Devices/";
+MB_String fb_path = "/Devices/";
 
 void firebaseSetup()
 {
@@ -23,9 +23,7 @@ void firebaseSetup()
 
 bool fbSilentUpdate(FirebaseJson &json)
 {
-    // if (Firebase.RTDB.updateNodeSilentAsync(&firebaseData1, path, &json)) // +Async
-    // if (Firebase.RTDB.pushJSONAsync(&firebaseData1, path, &json))
-    if (Firebase.RTDB.updateNode(&firebaseData1, path, &json))
+    if (Firebase.RTDB.updateNodeSilentAsync(&firebaseData1, fb_path, &json))
     {
         MN_DEBUGLN_F("[UPDATE] Successful");
     }
@@ -38,7 +36,8 @@ bool fbSilentUpdate(FirebaseJson &json)
     return true;
 }
 
-bool jsonSetter(FirebaseJson &json)
+/*
+bool jsonSetter_old(FirebaseJson &json)
 {
     String temperature = temp_temperature;
     String humidity = temp_humidity;
@@ -137,65 +136,72 @@ bool jsonSetter(FirebaseJson &json)
 
     return true;
 }
+*/
 
 bool displaySetter(FirebaseJson &json, const String &timestamp) // Tem and hum
 {
-    FirebaseJson display;
-    FirebaseJson temphum;
-    temphum.set("TEM", "28.20");
-    temphum.set("HUM", "66.20");
-    display.set(timestamp, temphum);
-    json.set("display", display);
+    // FirebaseJson temphum;
+    // temphum.set("TEM", "28.20");
+    // temphum.set("HUM", "66.20");
+    // json.set(fb_path+"/display/"+timestamp, temphum);
+
+    json.set(fb_path+"/display/"+timestamp+"/TEM", temp_temperature);
+    json.set(fb_path+"/display/"+timestamp+"/HUM", temp_humidity);
     return true;
 }
 
 bool liveSetter(FirebaseJson &json, const String &timestamp)
 {
-    FirebaseJson live;
-    FirebaseJson altlatlon;
-    altlatlon.set("ALT", "59.600000");
-    altlatlon.set("LAT", "22.602675");
-    altlatlon.set("LON", "88.344897");
-    live.set(timestamp, altlatlon);
-    json.set("live", live);
+    json.set(fb_path+"/live/"+timestamp+"/ALT", temp_gps_altitude);
+    json.set(fb_path+"/live/"+timestamp+"/LAT", temp_gps_latitude);
+    json.set(fb_path+"/live/"+timestamp+"/LON", temp_gps_longitude);
     return true;
 }
 
 bool predictsetter(FirebaseJson &json, const String &timestamp)
 {
-    FirebaseJson predict;
-    FirebaseJson altitudes;
-    altitudes.set("A_X", "-0.30,-0.30,-0.30,-0.29,-0.30,-0.30,-0.29,-0.30,-0.30,-0.31,-0.31,-0.29,-0.31,-0.30,-0.31,-0.29,-0.30,-0.29,-0.33,-0.29,-0.30,-0.29,-0.30,-0.30,-0.29");
-    altitudes.set("A_Y", "-0.19,-0.21,-0.21,-0.20,-0.21,-0.20,-0.22,-0.21,-0.20,-0.19,-0.19,-0.22,-0.20,-0.20,-0.19,-0.21,-0.21,-0.20,-0.21,-0.20,-0.20,-0.19,-0.21,-0.21,-0.21");
-    altitudes.set("A_Z", "9.87,9.84,9.83,9.85,9.87,9.85,9.84,9.89,9.83,9.89,9.88,9.89,9.83,9.86,9.85,9.84,9.85,9.88,9.88,9.86,9.85,9.86,9.87,9.84,9.85");
-    altitudes.set("G_X", "-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04");
-    altitudes.set("G_Y", "-0.01,-0.01,-0.00,-0.01,-0.00,-0.01,-0.00,-0.00,-0.00,-0.01,-0.01,-0.00,-0.00,-0.00,-0.01,-0.01,-0.01,-0.00,-0.01,-0.00,-0.00,-0.00,-0.00,-0.00,-0.00");
-    altitudes.set("G_Z", "0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.02,0.02,0.01,0.01");
-    predict.set(timestamp, altitudes);
-    json.set("predict", predict);
+    // FirebaseJson predict;
+    // FirebaseJson altitudes;
+    // altitudes.set("A_X", "-0.30,-0.30,-0.30,-0.29,-0.30,-0.30,-0.29,-0.30,-0.30,-0.31,-0.31,-0.29,-0.31,-0.30,-0.31,-0.29,-0.30,-0.29,-0.33,-0.29,-0.30,-0.29,-0.30,-0.30,-0.29");
+    // altitudes.set("A_Y", "-0.19,-0.21,-0.21,-0.20,-0.21,-0.20,-0.22,-0.21,-0.20,-0.19,-0.19,-0.22,-0.20,-0.20,-0.19,-0.21,-0.21,-0.20,-0.21,-0.20,-0.20,-0.19,-0.21,-0.21,-0.21");
+    // altitudes.set("A_Z", "9.87,9.84,9.83,9.85,9.87,9.85,9.84,9.89,9.83,9.89,9.88,9.89,9.83,9.86,9.85,9.84,9.85,9.88,9.88,9.86,9.85,9.86,9.87,9.84,9.85");
+    // altitudes.set("G_X", "-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04");
+    // altitudes.set("G_Y", "-0.01,-0.01,-0.00,-0.01,-0.00,-0.01,-0.00,-0.00,-0.00,-0.01,-0.01,-0.00,-0.00,-0.00,-0.01,-0.01,-0.01,-0.00,-0.01,-0.00,-0.00,-0.00,-0.00,-0.00,-0.00");
+    // altitudes.set("G_Z", "0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.02,0.02,0.01,0.01");
+    // predict.set(timestamp, altitudes);
+    // json.set("predict", predict);
+
+    json.set(fb_path+"/predict/"+timestamp+"/A_X", temp_accelero_X);
+    json.set(fb_path+"/predict/"+timestamp+"/A_Y", temp_accelero_Y);
+    json.set(fb_path+"/predict/"+timestamp+"/A_Z", temp_accelero_Z);
+    json.set(fb_path+"/predict/"+timestamp+"/G_X", temp_gyro_X);
+    json.set(fb_path+"/predict/"+timestamp+"/G_Y", temp_gyro_Y);
+    json.set(fb_path+"/predict/"+timestamp+"/G_Z", temp_gyro_Z);
     return true;
 }
 
 bool rfidsetter(FirebaseJson &json)
 {
-    json.set("rfid", "");
+    json.set(fb_path+"/rfid", "xyz");
     return true;
 }
 
 bool soundsetter(FirebaseJson &json, const String &timestamp)
 {
-    FirebaseJson sound;
-    FirebaseJson snl;
-    snl.set("SNL", "42,61,62,68,69,61,62,67,68,66,62,61,68,68,56,62,62,68,68,58,58,59,61,68,63");
-    sound.set(timestamp, snl);
-    json.set("sound", sound);
+    // FirebaseJson sound;
+    // FirebaseJson snl;
+    // snl.set("SNL", "42,61,62,68,69,61,62,67,68,66,62,61,68,68,56,62,62,68,68,58,58,59,61,68,63");
+    // sound.set(timestamp, snl);
+    // json.set("sound", sound);
+
+    json.set(fb_path+"/sound/"+timestamp+"/SNL", temp_sound_db);
     return true;
 }
-// Update
+
 bool updateDB(const String &timestamp)
 {
     FirebaseJson payload;
-    // if (displaySetter(payload, timestamp) && liveSetter(payload, timestamp) && predictsetter(payload, timestamp) && soundsetter(payload, timestamp))
+
     if (displaySetter(payload, timestamp) && liveSetter(payload, timestamp) && predictsetter(payload, timestamp) && rfidsetter(payload) && soundsetter(payload, timestamp))
     {
         // return true;
