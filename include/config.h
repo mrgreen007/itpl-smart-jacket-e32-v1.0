@@ -49,8 +49,8 @@
 
 // Firebase creds
 #ifdef TEST
-#define FIREBASE_HOST "https://data-10cce-default-rtdb.firebaseio.com/"
-#define FIREBASE_AUTH "XLEA8AwVcE8jibJd2gBWMtL9Yna5vRHUH1CNch1A"
+#define FIREBASE_HOST "https://itpl-iot-jacket-default-rtdb.firebaseio.com/" //"https://data-10cce-default-rtdb.firebaseio.com/"
+#define FIREBASE_AUTH "RjeB9Js7WvxG3GrIDKD1IKVsHPVr4XJTHxWpgfqw" //"XLEA8AwVcE8jibJd2gBWMtL9Yna5vRHUH1CNch1A"
 #else
 #define FIREBASE_HOST "https://itpl-smart-jacket-v1-default-rtdb.firebaseio.com/"
 #define FIREBASE_AUTH "sMgJhFByyBzpDk0hQc5NdzVXAzVNDpgtqe75uKcz"
