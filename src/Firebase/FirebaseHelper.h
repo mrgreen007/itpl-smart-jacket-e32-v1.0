@@ -9,7 +9,7 @@ FirebaseData firebaseData1;
 FirebaseAuth auth;
 FirebaseConfig config;
 
-String path = "";
+String path = "/Devices/";
 
 void firebaseSetup()
 {
@@ -23,7 +23,9 @@ void firebaseSetup()
 
 bool fbSilentUpdate(FirebaseJson &json)
 {
-    if (Firebase.RTDB.updateNodeSilentAsync(&firebaseData1, path, &json)) // +Async
+    // if (Firebase.RTDB.updateNodeSilentAsync(&firebaseData1, path, &json)) // +Async
+    // if (Firebase.RTDB.pushJSONAsync(&firebaseData1, path, &json))
+    if (Firebase.RTDB.updateNode(&firebaseData1, path, &json))
     {
         MN_DEBUGLN_F("[UPDATE] Successful");
     }
@@ -42,10 +44,10 @@ bool jsonSetter(FirebaseJson &json)
     String humidity = temp_humidity;
     int str_len = temperature.length();
 
-    if(str_len == 0)
+    if (str_len == 0)
     {
         String x = "x.x";
-        for(int i=0; i<25; i++)
+        for (int i = 0; i < 25; i++)
         {
             temperature += x;
             temperature += ",";
@@ -53,14 +55,14 @@ bool jsonSetter(FirebaseJson &json)
             humidity += ",";
         }
     }
-    else if(temperature[str_len-1] != ',')
+    else if (temperature[str_len - 1] != ',')
     {
         String t = temperature;
         String h = humidity;
         temperature = "";
         humidity = "";
 
-        for (int i=0; i<25; i++)
+        for (int i = 0; i < 25; i++)
         {
             temperature += t;
             temperature += ",";
@@ -69,11 +71,11 @@ bool jsonSetter(FirebaseJson &json)
         }
     }
 
-    if(gps_index_counter != 0)
+    if (gps_index_counter != 0)
     {
-        String lat_last_val = String(gps_buffer[gps_index_counter-1][0], 6U);
-        String lon_last_val = String(gps_buffer[gps_index_counter-1][1], 6U);
-        String alt_last_val = String(gps_buffer[gps_index_counter-1][2], 6U);
+        String lat_last_val = String(gps_buffer[gps_index_counter - 1][0], 6U);
+        String lon_last_val = String(gps_buffer[gps_index_counter - 1][1], 6U);
+        String alt_last_val = String(gps_buffer[gps_index_counter - 1][2], 6U);
 
         for (int i = gps_index_counter; i < GPS_SAMPLE_POINTS; i++)
         {
@@ -84,10 +86,10 @@ bool jsonSetter(FirebaseJson &json)
             temp_gps_altitude += alt_last_val;
             temp_gps_altitude += ",";
         }
-        
+
         gps_index_counter = 0;
     }
-    else if(gps_index_counter == 0 && temp_gps_latitude == "")
+    else if (gps_index_counter == 0 && temp_gps_latitude == "")
     {
         String x = "0.0";
         for (int i = 0; i < GPS_SAMPLE_POINTS; i++)
@@ -99,7 +101,7 @@ bool jsonSetter(FirebaseJson &json)
             temp_gps_altitude += x;
             temp_gps_altitude += ",";
         }
-    }  
+    }
 
     MN_DEBUGLN(temp_accelero_X);
     MN_DEBUGLN(temp_accelero_Y);
@@ -136,15 +138,68 @@ bool jsonSetter(FirebaseJson &json)
     return true;
 }
 
+bool displaySetter(FirebaseJson &json, const String &timestamp) // Tem and hum
+{
+    FirebaseJson display;
+    FirebaseJson temphum;
+    temphum.set("TEM", "28.20");
+    temphum.set("HUM", "66.20");
+    display.set(timestamp, temphum);
+    json.set("display", display);
+    return true;
+}
+
+bool liveSetter(FirebaseJson &json, const String &timestamp)
+{
+    FirebaseJson live;
+    FirebaseJson altlatlon;
+    altlatlon.set("ALT", "59.600000");
+    altlatlon.set("LAT", "22.602675");
+    altlatlon.set("LON", "88.344897");
+    live.set(timestamp, altlatlon);
+    json.set("live", live);
+    return true;
+}
+
+bool predictsetter(FirebaseJson &json, const String &timestamp)
+{
+    FirebaseJson predict;
+    FirebaseJson altitudes;
+    altitudes.set("A_X", "-0.30,-0.30,-0.30,-0.29,-0.30,-0.30,-0.29,-0.30,-0.30,-0.31,-0.31,-0.29,-0.31,-0.30,-0.31,-0.29,-0.30,-0.29,-0.33,-0.29,-0.30,-0.29,-0.30,-0.30,-0.29");
+    altitudes.set("A_Y", "-0.19,-0.21,-0.21,-0.20,-0.21,-0.20,-0.22,-0.21,-0.20,-0.19,-0.19,-0.22,-0.20,-0.20,-0.19,-0.21,-0.21,-0.20,-0.21,-0.20,-0.20,-0.19,-0.21,-0.21,-0.21");
+    altitudes.set("A_Z", "9.87,9.84,9.83,9.85,9.87,9.85,9.84,9.89,9.83,9.89,9.88,9.89,9.83,9.86,9.85,9.84,9.85,9.88,9.88,9.86,9.85,9.86,9.87,9.84,9.85");
+    altitudes.set("G_X", "-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04,-0.04");
+    altitudes.set("G_Y", "-0.01,-0.01,-0.00,-0.01,-0.00,-0.01,-0.00,-0.00,-0.00,-0.01,-0.01,-0.00,-0.00,-0.00,-0.01,-0.01,-0.01,-0.00,-0.01,-0.00,-0.00,-0.00,-0.00,-0.00,-0.00");
+    altitudes.set("G_Z", "0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.02,0.02,0.01,0.01");
+    predict.set(timestamp, altitudes);
+    json.set("predict", predict);
+    return true;
+}
+
+bool rfidsetter(FirebaseJson &json)
+{
+    json.set("rfid", "");
+    return true;
+}
+
+bool soundsetter(FirebaseJson &json, const String &timestamp)
+{
+    FirebaseJson sound;
+    FirebaseJson snl;
+    snl.set("SNL", "42,61,62,68,69,61,62,67,68,66,62,61,68,68,56,62,62,68,68,58,58,59,61,68,63");
+    sound.set(timestamp, snl);
+    json.set("sound", sound);
+    return true;
+}
+// Update
 bool updateDB(const String &timestamp)
 {
     FirebaseJson payload;
-    if (jsonSetter(payload))
+    // if (displaySetter(payload, timestamp) && liveSetter(payload, timestamp) && predictsetter(payload, timestamp) && soundsetter(payload, timestamp))
+    if (displaySetter(payload, timestamp) && liveSetter(payload, timestamp) && predictsetter(payload, timestamp) && rfidsetter(payload) && soundsetter(payload, timestamp))
     {
-        path = "/";
-        path += timestamp;
-         return true;
-        //return fbSilentUpdate(payload);
+        // return true;
+        return fbSilentUpdate(payload);
     }
     return false;
 }
