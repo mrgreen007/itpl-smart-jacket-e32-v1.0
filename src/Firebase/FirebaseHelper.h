@@ -9,7 +9,7 @@ FirebaseData firebaseData1;
 FirebaseAuth auth;
 FirebaseConfig config;
 
-MB_String fb_path = "/Devices/";
+String fb_path = "/Devices/";
 
 void firebaseSetup()
 {
@@ -145,8 +145,8 @@ bool displaySetter(FirebaseJson &json, const String &timestamp) // Tem and hum
     // temphum.set("HUM", "66.20");
     // json.set(fb_path+"/display/"+timestamp, temphum);
 
-    json.set(fb_path+"/display/"+timestamp+"/TEM", temp_temperature);
-    json.set(fb_path+"/display/"+timestamp+"/HUM", temp_humidity);
+    json.set(fb_path+"/display/"+timestamp+"/TEM", "temp_temperature");
+    json.set(fb_path+"/display/"+timestamp+"/HUM", "temp_humidity");
     return true;
 }
 
@@ -202,7 +202,8 @@ bool updateDB(const String &timestamp)
 {
     FirebaseJson payload;
 
-    if (displaySetter(payload, timestamp) && liveSetter(payload, timestamp) && predictsetter(payload, timestamp) && rfidsetter(payload) && soundsetter(payload, timestamp))
+    //if (displaySetter(payload, timestamp) && liveSetter(payload, timestamp) && predictsetter(payload, timestamp) && rfidsetter(payload) && soundsetter(payload, timestamp))
+    if(displaySetter(payload, timestamp))
     {
         // return true;
         return fbSilentUpdate(payload);

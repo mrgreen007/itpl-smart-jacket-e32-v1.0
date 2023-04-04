@@ -39,7 +39,8 @@ void gyroAcceleroLoop()
         temp_gyro_X = "";
         temp_gyro_Y = "";
         temp_gyro_Z = "";
-        start_timestamp = getTimestamp();
+        //start_timestamp = getTimestamp();
+        start_timestamp = millis();
         for (int i = 0; i < GA_SAMPLE_POINTS; i++)
         {
 
@@ -72,7 +73,8 @@ void gyroAcceleroLoop()
 
             if (GA_SAMPLE_POINTS - 1 == i)
             {
-                end_timestamp = getTimestamp();
+                //end_timestamp = getTimestamp();
+                end_timestamp = millis();
                 gyro_accelero_mutex = false;
             }
 
