@@ -1,5 +1,5 @@
-#ifndef BRIDGE_INTERFACE_H
-#define BRIDGE_INTERFACE_H
+#ifndef BRIDGE_H
+#define BRIDGE_H
 
 #include "config.h"
 
@@ -13,6 +13,8 @@ bool gps_mutex = true;
 bool sound_sensor_mutex = true;
 bool buzzer_mutex = true;
 bool rfid_mutex = true;
+bool led_mutex = true;
+bool push_button_mutex = true;
 
 String start_timestamp = "";
 String end_timestamp = "";
