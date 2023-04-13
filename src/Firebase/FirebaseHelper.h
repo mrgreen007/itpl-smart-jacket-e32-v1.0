@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include "./Interfaces/BridgeInterface.h"
+#include "./Buzzer/BuzzerHelper.h"
 #include <Firebase_ESP_Client.h>
 
 // #define EN_CALLBACK
@@ -21,8 +22,23 @@ void extractData(FirebaseStream &data)
 void extractData(FirebaseData &data)
 #endif
 {
+    String val = data.to<String>();
     MN_DEBUG_F("Value: ");
-    MN_DEBUGLN(data.to<String>());
+    MN_DEBUGLN(val);
+
+    if(val == "1")
+    {
+        alertType = buzzTypes::continuos;
+    }
+    else if(val == "2")
+    {
+        alertType = buzzTypes::danger;
+    }
+    else
+    {
+        stopBuzzer();
+    }
+
 }
 
 #ifdef EN_CALLBACK
