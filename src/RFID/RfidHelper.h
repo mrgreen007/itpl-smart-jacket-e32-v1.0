@@ -92,7 +92,7 @@ bool writeTag()
   return true;
 }
 
-bool getTagID()
+bool assignTagID()
 {
   bool success = false;
   success = rfidReader.detectTag(priID);

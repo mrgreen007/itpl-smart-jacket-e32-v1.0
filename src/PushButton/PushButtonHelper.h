@@ -16,7 +16,7 @@ void handleTripleClick()
     led_mutex = false;
     MN_DEBUGLN("Triple Click");
     start_time = millis();
-    while (millis() - start_time < 30*1000 && !getTagID())
+    while (millis() - start_time < 30*1000 && !assignTagID())
     {
         digitalWrite(LED_PIN, !digitalRead(LED_PIN));
         delay(100);

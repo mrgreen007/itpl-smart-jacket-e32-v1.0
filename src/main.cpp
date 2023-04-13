@@ -122,17 +122,17 @@ void setup()
   fb_stream_path += "/command";
 
   // Setups
+  timeSetup();
   rfidSetup();
+  firebaseSetup();
 
+  MN_DEBUGLN_F("Waiting for card...");
   while(rfid_tag_id.length() < 8)
   {
-    getTagID();
+    assignTagID();
     digitalWrite(LED_PIN, !digitalRead(LED_PIN));
     delay(100);
   }
-
-  timeSetup();
-  firebaseSetup();
 
   xTaskCreate(gpsHandlerTask, "GPS Task", 4 * 1024, NULL, 1, NULL);
   xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);
