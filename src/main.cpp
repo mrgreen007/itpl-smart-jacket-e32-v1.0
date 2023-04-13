@@ -97,7 +97,7 @@ void setup()
 {
   Serial.begin(115200);
   pinMode(LED_PIN, OUTPUT);
-  vTaskDelay(1000 / portTICK_PERIOD_MS);
+  vTaskDelay(500 / portTICK_PERIOD_MS);
 
   MN_DEBUGLN("\n\n### Initializing...");
 
@@ -111,13 +111,9 @@ void setup()
   }
   MN_DEBUGLN("\nConnected to the WiFi network!");
 
-  //Setup Time
+  //Setup
   timeSetup();
-
-  //Setup RFID
   rfidSetup();
-
-  // Setup Firebase
   firebaseSetup();
 
   device_id = getUniqueID();
@@ -133,7 +129,7 @@ void setup()
   xTaskCreate(tempHumHandlerTask, "TH Task", 4 * 1024, NULL, 1, NULL);
   xTaskCreate(soundSensorHandlerTask, "SNL Task", 4 * 1024, NULL, 1, NULL);
   xTaskCreate(buzzerHandlerTask, "Buzzer Task", 4 * 1024, NULL, 1, NULL);
-  xTaskCreate(pushButtonHandlerTask, "Push Button Task", 4 * 1024, NULL, 1, NULL);
+  xTaskCreate(pushButtonHandlerTask, "Button Task", 4 * 1024, NULL, 1, NULL);
 }
 
 void loop()
@@ -153,7 +149,7 @@ void loop()
     gps_mutex = true;
     sound_sensor_mutex = true;
   }
-  // rfidLoop();
+
   if (led_mutex)
   {
     digitalWrite(LED_PIN, !digitalRead(LED_PIN));

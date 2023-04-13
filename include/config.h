@@ -33,7 +33,7 @@
 #define RFID_SDA_PIN 5
 #define RFID_RST_PIN 27
 #define BUZZER_PIN 32
-#define PUSH_BUTTON_GPIO_PIN 13
+#define PUSH_BUTTON_PIN 13
 
 // Editable
 #define GA_SAMPLING_RATE 5        // In Hz [max value: 1000]

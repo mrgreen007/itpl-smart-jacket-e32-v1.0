@@ -3,6 +3,8 @@
 
 #include "config.h"
 
+String rfid_id_tag = "";
+
 float gyro_accelero_buffer[GA_SAMPLE_POINTS][6] = {0.0};
 double gps_buffer[GPS_SAMPLE_POINTS][3] = {0.0};
 int sound_sensor_buffer[SOUND_SAMPLE_POINTS][1] = {0};
@@ -11,10 +13,7 @@ float temp_hum_buffer[2] = {-100};
 bool gyro_accelero_mutex = true;
 bool gps_mutex = true;
 bool sound_sensor_mutex = true;
-bool buzzer_mutex = true;
-bool rfid_mutex = true;
 bool led_mutex = true;
-bool push_button_mutex = true;
 
 String start_timestamp = "";
 String end_timestamp = "";

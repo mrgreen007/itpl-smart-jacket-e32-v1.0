@@ -21,7 +21,7 @@ void beepContinuos()
 void beepOnce()
 {
     digitalWrite(BUZZER_PIN, HIGH);
-    delay(1000);
+    delay(800);
     stopBuzzer();
 }
 
@@ -131,40 +131,33 @@ void buzzerSetup()
 
 void buzzerLoop()
 {
-    if (buzzer_mutex)
+    switch (alertType)
     {
-        switch (alertType)
-        {
-        case continuos:
-            beepContinuos();
-            break;
-        case once:
-            beepOnce();
-            break;
-        case danger:
-            beepDanger();
-            break;
-        case interval:
-            beep(5000,100);
-            break;            
-        case tone1:
-            beepTone1();
-            break;
-        case tone2:
-            beepTone2();
-            break;
-        case tone3:
-            beepTone3();
-            break;
-        case tone4:
-            beepTone4();
-            break;
-        default:
-            delay(100);
-        }
-    }
-    else
-    {
+    case continuos:
+        beepContinuos();
+        break;
+    case once:
+        beepOnce();
+        break;
+    case danger:
+        beepDanger();
+        break;
+    case interval:
+        beep(5000,100);
+        break;            
+    case tone1:
+        beepTone1();
+        break;
+    case tone2:
+        beepTone2();
+        break;
+    case tone3:
+        beepTone3();
+        break;
+    case tone4:
+        beepTone4();
+        break;
+    default:
         delay(100);
     }
 }

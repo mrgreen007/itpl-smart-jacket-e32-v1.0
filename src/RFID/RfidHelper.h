@@ -26,15 +26,6 @@ struct About
 byte priID[PRI_ID_LEN];
 byte secID[SEC_ID_LEN];
 
-String rfid_id_tag = "";
-byte RW_var = 0;
-
-bool allow = true;
-// unsigned long prevMillis_timer = 0;
-// unsigned long millisCurrent = 0;
-unsigned long prevMillis = 0;
-// unsigned long millisElapsed = 0;
-
 //====================================
 byte _secID[SEC_ID_LEN] = {0};
 String _name = "";
@@ -102,31 +93,8 @@ bool writeTag()
 void rfidSetup()
 {
   rfidReader.init();
-  delay(500);
+  delay(100);
+  MN_DEBUGLN_F("[OK] RFID setup!");
 }
 
-void rfidLoop()
-{
-  if (rfid_mutex)
-  {
-    if (millis() - prevMillis > 1000 * 5 || allow)
-    {
-      bool success = false;
-      success = rfidReader.detectTag(priID);
-      if (success)
-      {
-        char buff[60];
-        sprintf(buff, "%02X %02X %02X %02X", priID[0], priID[1], priID[2], priID[3]);
-        MN_DEBUGLN(buff);
-        rfidReader.unselectMifareTag();
-        prevMillis = millis();
-        allow = false;
-      }
-    }
-  }
-  else
-  {
-    delay(10);
-  }
-}
 #endif

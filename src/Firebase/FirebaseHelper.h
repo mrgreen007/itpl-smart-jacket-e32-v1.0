@@ -18,6 +18,7 @@ void firebaseSetup()
 
     Firebase.begin(&config, &auth);
     Firebase.reconnectWiFi(true);
+    delay(100);
     MN_DEBUGLN_F("[OK] Firebase setup!");
 }
 

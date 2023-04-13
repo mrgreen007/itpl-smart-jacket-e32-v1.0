@@ -128,9 +128,12 @@ void timeSetup()
     ConfigTime();
     if (timeStatus() != timeSet)
     {
-        MN_DEBUGLN_F("Unable to sync !");
+        MN_DEBUGLN_F("[Fail] Unable to sync Time!");
     }
-
+    else
+    {
+        MN_DEBUGLN_F("[OK] Time setup!");
+    }
     MN_DEBUGLN(getTimestamp());
 }
 

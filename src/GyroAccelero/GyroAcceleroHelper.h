@@ -21,12 +21,12 @@ void gyroAcceleroSetup()
             delay(100);
         }
     }
-    MN_DEBUGLN_F("[OK] GyroAccelero setup!");
 
     mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
     mpu.setGyroRange(MPU6050_RANGE_500_DEG);
     mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
     delay(50);
+    MN_DEBUGLN_F("[OK] GyroAccelero setup!");
 }
 
 void gyroAcceleroLoop()
