@@ -28,9 +28,9 @@ String temp_gyro_X = "";
 String temp_gyro_Y = "";
 String temp_gyro_Z = "";
 
-String temp_gps_latitude = "";
-String temp_gps_longitude = "";
-String temp_gps_altitude = "";
+String temp_gps_latitude = "22.60252,";
+String temp_gps_longitude = "88.34495,";
+String temp_gps_altitude = "1.02365,";
 
 String temp_temperature = "";
 String temp_humidity = "";
