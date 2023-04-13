@@ -92,6 +92,23 @@ bool writeTag()
   return true;
 }
 
+bool getTagID()
+{
+  bool success = false;
+  success = rfidReader.detectTag(priID);
+  if (success)
+  {
+    char buff[60];
+    sprintf(buff, "%02X%02X%02X%02X", priID[0], priID[1], priID[2], priID[3]);
+    rfidReader.unselectMifareTag();
+    rfid_tag_id = buff;
+    MN_DEBUGLN("rfid_id_tag");
+    MN_DEBUGLN(rfid_tag_id);
+    alertType = buzzTypes::once;
+  }
+  return success;
+}
+
 void rfidSetup()
 {
   rfidReader.init();

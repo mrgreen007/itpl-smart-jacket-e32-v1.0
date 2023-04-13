@@ -16,22 +16,8 @@ void handleTripleClick()
     led_mutex = false;
     MN_DEBUGLN("Triple Click");
     start_time = millis();
-    while (millis() - start_time < 30*1000)
+    while (millis() - start_time < 30*1000 && !getTagID())
     {
-        bool success = false;
-        success = rfidReader.detectTag(priID);
-        if (success)
-        {
-            char buff[60];
-            sprintf(buff, "%02X%02X%02X%02X", priID[0], priID[1], priID[2], priID[3]);
-            rfidReader.unselectMifareTag();
-            rfid_tag_id = buff;
-            MN_DEBUGLN("rfid_id_tag");
-            MN_DEBUGLN(rfid_tag_id);
-            alertType=buzzTypes::once;
-            break;
-        }
-        
         digitalWrite(LED_PIN, !digitalRead(LED_PIN));
         delay(100);
     }
