@@ -17,15 +17,15 @@ String fb_stream_path = "";
 #ifdef EN_CALLBACK
 void extractData(FirebaseStream &data)
 #else
-void extractData(FirebaseData &fbdo)
+void extractData(FirebaseData &data)
 #endif
 {
     MN_DEBUG_F("Value: ");
-    MN_DEBUGLN(fbdo.to<String>());
+    MN_DEBUGLN(data.to<String>());
 }
 
 #ifdef EN_CALLBACK
-void streamCallback(FirebaseStream &data)
+void streamCallback(FirebaseStream data)
 {
   extractData(data);
 }
