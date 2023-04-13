@@ -17,7 +17,7 @@ const char *ssid = "DESKTOP-IBH0VQ6 0455";
 const char *password = "o7597C0:";
 
 String timestamp = "";
-String device_id = "";
+unsigned long prev_millis = 0;
 
 String getUniqueID()
 {
@@ -111,18 +111,20 @@ void setup()
   }
   MN_DEBUGLN("\nConnected to the WiFi network!");
 
-  //Setup
-  timeSetup();
-  rfidSetup();
-  firebaseSetup();
-
+  // Assign device id
   device_id = getUniqueID();
   MN_DEBUG("Device ID: ");
   MN_DEBUGLN(device_id);
 
-  // Assign path
-  fb_path = "/Devices/";
-  fb_path += device_id;
+  // Set stream path
+  fb_stream_path = "/Devices/";
+  fb_stream_path += device_id;
+  fb_stream_path += "/command";
+
+  // Setups
+  timeSetup();
+  rfidSetup();
+  firebaseSetup();
 
   xTaskCreate(gpsHandlerTask, "GPS Task", 4 * 1024, NULL, 1, NULL);
   xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);
@@ -134,6 +136,8 @@ void setup()
 
 void loop()
 {
+  unsigned long current_millis = millis();
+
   if (!gyro_accelero_mutex && !sound_sensor_mutex)
   {
     gps_mutex = false;
@@ -150,9 +154,14 @@ void loop()
     sound_sensor_mutex = true;
   }
 
-  if (led_mutex)
+  #ifndef EN_CALLBACK
+  listenStream();
+  #endif
+
+  if (led_mutex && (current_millis - prev_millis) > 500)
   {
     digitalWrite(LED_PIN, !digitalRead(LED_PIN));
-    delay(500);
+    prev_millis = current_millis;
   }
+  delay(10);
 }

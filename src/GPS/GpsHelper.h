@@ -69,7 +69,7 @@ void updateValues()
       temp_gps_altitude += String(gps.altitude.meters(), 6U);
       temp_gps_altitude += ",";
 
-      if (GPS_SAMPLE_POINTS - 1 == gps_index_counter)
+      if (1 /*GPS_SAMPLE_POINTS*/ - 1 == gps_index_counter)
       {
         gps_mutex = false;
         gps_index_counter = -1;

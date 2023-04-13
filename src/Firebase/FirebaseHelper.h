@@ -5,11 +5,29 @@
 #include "./Interfaces/BridgeInterface.h"
 #include <Firebase_ESP_Client.h>
 
+// #define EN_CALLBACK
+
 FirebaseData firebaseData1;
 FirebaseAuth auth;
 FirebaseConfig config;
 
-String fb_path = "/Devices/";
+String fb_path = "";
+String fb_stream_path = "";
+
+#ifdef EN_CALLBACK
+void streamCallback(FirebaseStream &data)
+{
+  extractData(data);
+}
+
+void streamTimeoutCallback(bool timeout)
+{
+  if (timeout)
+  {
+    MN_DEBUGLN_F("[TIME-OUT]Stream timeout, resume streaming...");
+  }
+}
+#endif
 
 void firebaseSetup()
 {
@@ -18,9 +36,55 @@ void firebaseSetup()
 
     Firebase.begin(&config, &auth);
     Firebase.reconnectWiFi(true);
+
+    if (!Firebase.RTDB.beginStream(&firebaseData1, fb_stream_path))
+    {
+        MN_DEBUG_F("[E] Stream begin error: ");
+        MN_DEBUGLN(firebaseData1.errorReason().c_str());
+    }
+
+    #ifdef EN_CALLBACK
+    // Setup streaming callback function [*]
+    Firebase.RTDB.setStreamCallback(&firebaseData1, streamCallback, streamTimeoutCallback);
+    #endif
+
     delay(100);
     MN_DEBUGLN_F("[OK] Firebase setup!");
 }
+
+#ifdef EN_CALLBACK
+void extractData(FirebaseStream &data)
+#else
+void extractData(FirebaseData &fbdo)
+#endif
+{
+    MN_DEBUG_F("Value: ");
+    MN_DEBUGLN(fbdo.to<String>());
+}
+
+#ifndef EN_CALLBACK
+void listenStream()
+{
+    if (Firebase.ready())
+    {
+        if (!Firebase.RTDB.readStream(&firebaseData1))
+        {
+            MN_DEBUG_F("[E] Stream Read Error: ");
+            MN_DEBUGLN(firebaseData1.errorReason());
+        }
+
+        if (firebaseData1.streamTimeout())
+        {
+            MN_DEBUGLN_F("[TIME-OUT]Stream timeout, resume streaming...");
+        }
+
+        if (firebaseData1.streamAvailable())
+        {
+            extractData(firebaseData1);
+        }
+    }
+}
+#endif
 
 bool fbSilentUpdate(FirebaseJson &json)
 {
@@ -139,7 +203,7 @@ bool jsonSetter_old(FirebaseJson &json)
 }
 */
 
-bool displaySetter(FirebaseJson &json, const String &timestamp) // Tem and hum
+/*bool displaySetter(FirebaseJson &json, const String &timestamp) // Tem and hum
 {
     // FirebaseJson temphum;
     // temphum.set("TEM", "28.20");
@@ -199,14 +263,50 @@ bool soundsetter(FirebaseJson &json, const String &timestamp)
     return true;
 }
 
+double rand_double()
+{
+    return ((double)rand()) / ((double)RAND_MAX);
+}*/
+
+bool jsonSetter(FirebaseJson &json)
+{
+    String temperature = temp_temperature;
+    String humidity = temp_humidity;
+    temperature += ",";
+    humidity += ",";
+
+    json.set("TEM", temperature);
+    json.set("HUM", humidity);
+
+    json.set("A_X", temp_accelero_X);
+    json.set("A_Y", temp_accelero_Y);
+    json.set("A_Z", temp_accelero_Z);
+    json.set("G_X", temp_gyro_X);
+    json.set("G_Y", temp_gyro_Y);
+    json.set("G_Z", temp_gyro_Z);
+
+    json.set("LAT", temp_gps_latitude);
+    json.set("LON", temp_gps_longitude);
+    json.set("ALT", temp_gps_altitude);
+
+    json.set("SNL", temp_sound_db);
+
+    json.set("rfid", rfid_tag_id);
+    return true;
+}
+
 bool updateDB(const String &timestamp)
 {
     FirebaseJson payload;
 
-    //if (displaySetter(payload, timestamp) && liveSetter(payload, timestamp) && predictsetter(payload, timestamp) && rfidsetter(payload) && soundsetter(payload, timestamp))
-    if(displaySetter(payload, timestamp))
+    if (jsonSetter(payload))
     {
-        // return true;
+        fb_path = "/Devices/";
+        fb_path += device_id;
+        fb_path += "/";
+        fb_path += "sensordata";
+        fb_path += "/";
+        fb_path += timestamp;
         return fbSilentUpdate(payload);
     }
     return false;

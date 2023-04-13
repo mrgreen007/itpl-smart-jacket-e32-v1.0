@@ -26,6 +26,8 @@ struct About
 byte priID[PRI_ID_LEN];
 byte secID[SEC_ID_LEN];
 
+String rfid_info = "";
+
 //====================================
 byte _secID[SEC_ID_LEN] = {0};
 String _name = "";
@@ -56,7 +58,7 @@ bool readTag()
     MN_DEBUG("   - Access Type: ");
     MN_DEBUGLN(about.accessType);
 
-    rfid_id_tag = rfid_id_tag + ",\"secondaryid\":\"" + id_2 + "\",\"name\":\"" + about.name + "\",\"accesstype\":\"" + about.accessType + "\"}";
+    rfid_info = rfid_info + ",\"secondaryid\":\"" + id_2 + "\",\"name\":\"" + about.name + "\",\"accesstype\":\"" + about.accessType + "\"}";
   }
   else
   {

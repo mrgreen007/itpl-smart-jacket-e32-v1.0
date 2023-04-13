@@ -25,9 +25,9 @@ void handleTripleClick()
             char buff[60];
             sprintf(buff, "%02X%02X%02X%02X", priID[0], priID[1], priID[2], priID[3]);
             rfidReader.unselectMifareTag();
-            rfid_id_tag = buff;
+            rfid_tag_id = buff;
             MN_DEBUGLN("rfid_id_tag");
-            MN_DEBUGLN(rfid_id_tag);
+            MN_DEBUGLN(rfid_tag_id);
             alertType=buzzTypes::once;
             break;
         }
