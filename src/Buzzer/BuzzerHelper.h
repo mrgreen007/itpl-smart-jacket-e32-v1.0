@@ -2,6 +2,7 @@
 #define BUZZER_H
 #include "Buzzer/pitches.h"
 #include "config.h"
+#include "./Interfaces/BridgeInterface.h"
 
 enum buzzTypes
 {
@@ -31,7 +32,7 @@ void beepContinuos()
 void beepOnce()
 {
     digitalWrite(BUZZER_PIN, HIGH);
-    delay(1000);
+    delay(800);
     stopBuzzer();
 }
 

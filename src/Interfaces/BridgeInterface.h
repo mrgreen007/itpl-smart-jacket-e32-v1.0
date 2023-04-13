@@ -1,9 +1,8 @@
-#ifndef BRIDGE_INTERFACE_H
-#define BRIDGE_INTERFACE_H
+#ifndef BRIDGE_H
+#define BRIDGE_H
 
 #include "config.h"
 
-String device_id = "";
 String rfid_id_tag = "";
 
 float gyro_accelero_buffer[GA_SAMPLE_POINTS][6] = {0.0};
@@ -14,8 +13,7 @@ float temp_hum_buffer[2] = {-100};
 bool gyro_accelero_mutex = true;
 bool gps_mutex = true;
 bool sound_sensor_mutex = true;
-bool buzzer_mutex = true;
-bool rfid_mutex = true;
+bool led_mutex = true;
 
 String start_timestamp = "";
 String end_timestamp = "";
