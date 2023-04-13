@@ -8,6 +8,7 @@
 #include "Time/TimeHelper.h"
 #include "Buzzer/BuzzerHelper.h"
 #include "RFID/RfidHelper.h"
+#include "PushButton/PushButtonHelper.h"
 
 // :Temporary wifi creds:
 // const char *ssid = "LAPTOP-N8V9637C 6288";
@@ -82,6 +83,16 @@ void buzzerHandlerTask(void *pvParameters)
   }
 }
 
+void pushButtonHandlerTask(void *pvParameters)
+{
+  (void)pvParameters;
+  pushButtonSetup();
+  while (true)
+  {
+    pushButtonLoop();
+  }
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -122,6 +133,7 @@ void setup()
   xTaskCreate(tempHumHandlerTask, "TH Task", 4 * 1024, NULL, 1, NULL);
   xTaskCreate(soundSensorHandlerTask, "SNL Task", 4 * 1024, NULL, 1, NULL);
   xTaskCreate(buzzerHandlerTask, "Buzzer Task", 4 * 1024, NULL, 1, NULL);
+  xTaskCreate(pushButtonHandlerTask, "Push Button Task", 4 * 1024, NULL, 1, NULL);
 }
 
 void loop()
@@ -141,7 +153,10 @@ void loop()
     gps_mutex = true;
     sound_sensor_mutex = true;
   }
-  rfidLoop();
-  digitalWrite(LED_PIN, !digitalRead(LED_PIN));
-  delay(500);
+  // rfidLoop();
+  if (led_mutex)
+  {
+    digitalWrite(LED_PIN, !digitalRead(LED_PIN));
+    delay(500);
+  }
 }

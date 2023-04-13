@@ -2,6 +2,7 @@
 #define BUZZER_H
 #include "Buzzer/pitches.h"
 #include "config.h"
+#include "./Interfaces/BridgeInterface.h"
 
 enum buzzTypes{stop, continuos ,once ,danger ,interval ,tone1 ,tone2 ,tone3 ,tone4} alertType;
 

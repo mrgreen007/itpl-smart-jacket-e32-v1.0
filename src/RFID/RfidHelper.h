@@ -1,5 +1,9 @@
-#include <config.h>
+#ifndef RFID_H
+#define RFID_H
+
+#include "config.h"
 #include <EasyMFRC522.h>
+#include "./Interfaces/BridgeInterface.h"
 
 /**
  * SCK     14
@@ -22,7 +26,7 @@ struct About
 byte priID[PRI_ID_LEN];
 byte secID[SEC_ID_LEN];
 
-String global_string = "";
+String rfid_id_tag = "";
 byte RW_var = 0;
 
 bool allow = true;
@@ -61,7 +65,7 @@ bool readTag()
     MN_DEBUG("   - Access Type: ");
     MN_DEBUGLN(about.accessType);
 
-    global_string = global_string + ",\"secondaryid\":\"" + id_2 + "\",\"name\":\"" + about.name + "\",\"accesstype\":\"" + about.accessType + "\"}";
+    rfid_id_tag = rfid_id_tag + ",\"secondaryid\":\"" + id_2 + "\",\"name\":\"" + about.name + "\",\"accesstype\":\"" + about.accessType + "\"}";
   }
   else
   {
@@ -125,3 +129,4 @@ void rfidLoop()
     delay(10);
   }
 }
+#endif
