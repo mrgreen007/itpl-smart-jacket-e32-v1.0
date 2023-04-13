@@ -5,9 +5,10 @@
 #include "./Interfaces/BridgeInterface.h"
 #include <Firebase_ESP_Client.h>
 
-#define EN_CALLBACK
+// #define EN_CALLBACK
 
 FirebaseData firebaseData1;
+FirebaseData firebaseData2;
 FirebaseAuth auth;
 FirebaseConfig config;
 
@@ -88,14 +89,14 @@ void listenStream()
 
 bool fbSilentUpdate(FirebaseJson &json)
 {
-    if (Firebase.RTDB.updateNodeSilentAsync(&firebaseData1, fb_path, &json))
+    if (Firebase.RTDB.updateNodeSilentAsync(&firebaseData2, fb_path, &json))
     {
         MN_DEBUGLN_F("[UPDATE] Successful");
     }
     else
     {
         MN_DEBUG_F("[FAIL] Fail to update :\t");
-        MN_DEBUGLN(firebaseData1.errorReason());
+        MN_DEBUGLN(firebaseData2.errorReason());
         return false;
     }
     return true;
