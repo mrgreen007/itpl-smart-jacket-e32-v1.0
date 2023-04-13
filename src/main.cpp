@@ -10,13 +10,12 @@
 #include "RFID/RfidHelper.h"
 
 // :Temporary wifi creds:
-// const char *ssid = "LAPTOP-N8V9637C 6288";
-// const char *password = "%0T521o8";
-const char *ssid = "DESKTOP-IBH0VQ6 0455";
-const char *password = "o7597C0:";
+const char *ssid = "LAPTOP-N8V9637C 6288";
+const char *password = "%0T521o8";
+// const char *ssid = "DESKTOP-IBH0VQ6 0455";
+// const char *password = "o7597C0:";
 
 String timestamp = "";
-String device_id = "";
 
 String getUniqueID()
 {
@@ -100,10 +99,10 @@ void setup()
   }
   MN_DEBUGLN("\nConnected to the WiFi network!");
 
-  //Setup Time
+  // Setup Time
   timeSetup();
 
-  //Setup RFID
+  // Setup RFID
   rfidSetup();
 
   // Setup Firebase
@@ -114,11 +113,11 @@ void setup()
   MN_DEBUGLN(device_id);
 
   // Assign path
-  fb_path = "/Devices/";
-  fb_path += device_id;
+  // fb_path = "/Devices/";
+  // fb_path += device_id;
 
   xTaskCreate(gpsHandlerTask, "GPS Task", 4 * 1024, NULL, 1, NULL);
-  xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);
+  // xTaskCreate(gyroAcceleroHandlerTask, "GA Task", 4 * 1024, NULL, 1, NULL);
   xTaskCreate(tempHumHandlerTask, "TH Task", 4 * 1024, NULL, 1, NULL);
   xTaskCreate(soundSensorHandlerTask, "SNL Task", 4 * 1024, NULL, 1, NULL);
   xTaskCreate(buzzerHandlerTask, "Buzzer Task", 4 * 1024, NULL, 1, NULL);
@@ -126,7 +125,8 @@ void setup()
 
 void loop()
 {
-  if (!gyro_accelero_mutex && !sound_sensor_mutex)
+  // if (!gyro_accelero_mutex && !sound_sensor_mutex)
+  if (!sound_sensor_mutex)
   {
     gps_mutex = false;
     MN_DEBUGLN(">>> buffer full <<<");

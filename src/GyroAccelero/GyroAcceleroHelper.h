@@ -21,12 +21,12 @@ void gyroAcceleroSetup()
             delay(100);
         }
     }
-    MN_DEBUGLN_F("[OK] GyroAccelero setup!");
 
     mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
     mpu.setGyroRange(MPU6050_RANGE_500_DEG);
     mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
     delay(50);
+    MN_DEBUGLN_F("[OK] GyroAccelero setup!");
 }
 
 void gyroAcceleroLoop()
@@ -39,7 +39,7 @@ void gyroAcceleroLoop()
         temp_gyro_X = "";
         temp_gyro_Y = "";
         temp_gyro_Z = "";
-        //start_timestamp = getTimestamp();
+        // start_timestamp = getTimestamp();
         start_timestamp = millis();
         for (int i = 0; i < GA_SAMPLE_POINTS; i++)
         {
@@ -73,7 +73,7 @@ void gyroAcceleroLoop()
 
             if (GA_SAMPLE_POINTS - 1 == i)
             {
-                //end_timestamp = getTimestamp();
+                // end_timestamp = getTimestamp();
                 end_timestamp = millis();
                 gyro_accelero_mutex = false;
             }

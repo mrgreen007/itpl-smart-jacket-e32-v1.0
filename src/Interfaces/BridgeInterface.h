@@ -3,6 +3,9 @@
 
 #include "config.h"
 
+String device_id = "";
+String rfid_id_tag = "";
+
 float gyro_accelero_buffer[GA_SAMPLE_POINTS][6] = {0.0};
 double gps_buffer[GPS_SAMPLE_POINTS][3] = {0.0};
 int sound_sensor_buffer[SOUND_SAMPLE_POINTS][1] = {0};

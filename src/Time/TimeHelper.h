@@ -35,8 +35,8 @@ void makeTimestamp(char time_str[])
     sprintf(yr, "%d", year());
     strcat(time_str, yr);
     strcat(time_str, "-");
-    sprintf(mn, "%d", month()+1);
-    if (month()+1 < 10)
+    sprintf(mn, "%d", month() + 1);
+    if (month() + 1 < 10)
     {
         strcat(time_str, "0");
         strcat(time_str, mn);
@@ -128,10 +128,12 @@ void timeSetup()
     ConfigTime();
     if (timeStatus() != timeSet)
     {
-        MN_DEBUGLN_F("Unable to sync !");
+        MN_DEBUGLN_F("[Fail] Unable to sync Time!");
     }
-
-    MN_DEBUGLN(getTimestamp());
+    else
+    {
+        MN_DEBUGLN_F("[OK] Time setup!");
+    }
 }
 
 #endif

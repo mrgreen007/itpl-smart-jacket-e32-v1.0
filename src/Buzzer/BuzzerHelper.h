@@ -3,7 +3,18 @@
 #include "Buzzer/pitches.h"
 #include "config.h"
 
-enum buzzTypes{stop, continuos ,once ,danger ,interval ,tone1 ,tone2 ,tone3 ,tone4} alertType;
+enum buzzTypes
+{
+    stop,
+    continuos,
+    once,
+    danger,
+    interval,
+    tone1,
+    tone2,
+    tone3,
+    tone4
+} alertType;
 
 void stopBuzzer()
 {
@@ -46,7 +57,7 @@ void beep(int dur, int interval)
 {
     for (int i = 1; i <= round((double)dur / (double)interval); i++)
     {
-        digitalWrite(BUZZER_PIN,!digitalRead(BUZZER_PIN));
+        digitalWrite(BUZZER_PIN, !digitalRead(BUZZER_PIN));
         delay(interval);
     }
     stopBuzzer();
@@ -66,7 +77,7 @@ void beepTone1()
         tone(BUZZER_PIN, melody[thisNote], noteDuration); // play tone
         int pauseBetweenNotes = noteDuration * 1.30;
         delay(pauseBetweenNotes); // delay
-        noTone(BUZZER_PIN);  // tone off
+        noTone(BUZZER_PIN);       // tone off
     }
     stopBuzzer();
 }
@@ -130,40 +141,33 @@ void buzzerSetup()
 
 void buzzerLoop()
 {
-    if (buzzer_mutex)
+    switch (alertType)
     {
-        switch (alertType)
-        {
-        case continuos:
-            beepContinuos();
-            break;
-        case once:
-            beepOnce();
-            break;
-        case danger:
-            beepDanger();
-            break;
-        case interval:
-            beep(5000,100);
-            break;            
-        case tone1:
-            beepTone1();
-            break;
-        case tone2:
-            beepTone2();
-            break;
-        case tone3:
-            beepTone3();
-            break;
-        case tone4:
-            beepTone4();
-            break;
-        default:
-            delay(100);
-        }
-    }
-    else
-    {
+    case continuos:
+        beepContinuos();
+        break;
+    case once:
+        beepOnce();
+        break;
+    case danger:
+        beepDanger();
+        break;
+    case interval:
+        beep(5000, 100);
+        break;
+    case tone1:
+        beepTone1();
+        break;
+    case tone2:
+        beepTone2();
+        break;
+    case tone3:
+        beepTone3();
+        break;
+    case tone4:
+        beepTone4();
+        break;
+    default:
         delay(100);
     }
 }
