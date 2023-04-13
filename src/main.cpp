@@ -138,7 +138,7 @@ void loop()
 {
   unsigned long current_millis = millis();
 
-  if (!gyro_accelero_mutex && !sound_sensor_mutex)
+  if (!gyro_accelero_mutex && !sound_sensor_mutex && rfid_tag_id.length()>7)
   {
     gps_mutex = false;
     MN_DEBUGLN(">>> buffer full <<<");

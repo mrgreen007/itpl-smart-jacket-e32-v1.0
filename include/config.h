@@ -37,7 +37,7 @@
 
 // Editable
 #define GA_SAMPLING_RATE 5          // In Hz [max value: 1000]
-#define GPS_SAMPLING_RATE 5       // In Hz [max value: 1000]
+#define GPS_SAMPLING_RATE 5         // In Hz [max value: 1000]
 #define SOUND_SAMPLING_RATE 5       // In Hz [max value: 1000]
 #define SERVER_SYNC_INTERVAL 5000   // In ms [min value: 1000]
 
