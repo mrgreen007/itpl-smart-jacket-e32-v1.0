@@ -5,7 +5,7 @@
 #include "./Interfaces/BridgeInterface.h"
 #include <Firebase_ESP_Client.h>
 
-// #define EN_CALLBACK
+#define EN_CALLBACK
 
 FirebaseData firebaseData1;
 FirebaseAuth auth;
@@ -13,6 +13,16 @@ FirebaseConfig config;
 
 String fb_path = "";
 String fb_stream_path = "";
+
+#ifdef EN_CALLBACK
+void extractData(FirebaseStream &data)
+#else
+void extractData(FirebaseData &fbdo)
+#endif
+{
+    MN_DEBUG_F("Value: ");
+    MN_DEBUGLN(fbdo.to<String>());
+}
 
 #ifdef EN_CALLBACK
 void streamCallback(FirebaseStream &data)
@@ -50,16 +60,6 @@ void firebaseSetup()
 
     delay(100);
     MN_DEBUGLN_F("[OK] Firebase setup!");
-}
-
-#ifdef EN_CALLBACK
-void extractData(FirebaseStream &data)
-#else
-void extractData(FirebaseData &fbdo)
-#endif
-{
-    MN_DEBUG_F("Value: ");
-    MN_DEBUGLN(fbdo.to<String>());
 }
 
 #ifndef EN_CALLBACK
