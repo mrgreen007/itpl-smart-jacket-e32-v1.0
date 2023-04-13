@@ -3,6 +3,7 @@
 
 #include "config.h"
 
+String device_id = "";
 String rfid_id_tag = "";
 
 float gyro_accelero_buffer[GA_SAMPLE_POINTS][6] = {0.0};
