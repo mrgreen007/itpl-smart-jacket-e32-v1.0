@@ -1,7 +1,7 @@
 #ifndef FIREBASE_HELPER_H
 #define FIREBASE_HELPER_H
 
-#include "config.h"
+#include "DataProvider.h"
 #include "./Interfaces/BridgeInterface.h"
 #include "./Buzzer/BuzzerHelper.h"
 #include <Firebase_ESP_Client.h>
@@ -292,6 +292,11 @@ bool jsonSetter(FirebaseJson &json)
     temperature += ",";
     humidity += ",";
 
+    // String lat = temp_gps_latitude == "22.60252,"? String(getPoints[0])+"," : temp_gps_latitude;
+    std::vector<double> _v = getPoints();
+    String lat = String(_v[0], 5U)+",";
+    String lon = String(_v[1], 5U)+",";
+
     json.set("TEM", temperature);
     json.set("HUM", humidity);
 
@@ -302,8 +307,8 @@ bool jsonSetter(FirebaseJson &json)
     json.set("G_Y", temp_gyro_Y);
     json.set("G_Z", temp_gyro_Z);
 
-    json.set("LAT", temp_gps_latitude);
-    json.set("LON", temp_gps_longitude);
+    json.set("LAT", lat); // temp_gps_latitude
+    json.set("LON", lon); // temp_gps_longitude
     json.set("ALT", temp_gps_altitude);
 
     json.set("SNL", temp_sound_db);
